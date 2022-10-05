@@ -1,2 +1,2 @@
-# Messenger_project
-메신저 웹앱 만들기 프로젝트
+# Messenger_Server
+메신저 웹앱 Server
