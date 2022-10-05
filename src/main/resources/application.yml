@@ -20,4 +20,4 @@ logging:
     console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} [%4L] - %m%n"
     file: "[%d{HH:mm:ss.SSS}][%-5level][%t][%logger.%method:line%line] - %msg%n"
   file:
-    name: "${messenger.home:/tmp}/logs/mtf-server.log"
+    name: "${messenger.home:/tmp}/logs/messenger-server.log"
