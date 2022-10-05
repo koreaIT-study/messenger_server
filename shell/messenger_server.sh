@@ -70,7 +70,7 @@ start_server() {
   echo "application arguments : $APP_ARGS"
 
   # execute server
-  nohup java -jar $JVM_OPTS $SERVER_OPTS $JAR_FILE $APP_ARGS 1> /dev/null 2>&1 & 
+  nohup java -jar 1> /dev/null 2>&1 & 
 }
 
 # input argument check & execute
