@@ -1,6 +1,6 @@
 server:
   port: 12000
-  address: 172.31.24.203
+  address: 54.196.153.112
 
 spring:
   mvc:
