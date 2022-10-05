@@ -1,6 +1,14 @@
 server:
   port: 12000
 
+spring:
+  mvc:
+    view:
+      suffix: .html
+  thymeleaf:
+    prefix: classpath:/templates
+
+
 logging:
   logback:
     rollingpolicy:
