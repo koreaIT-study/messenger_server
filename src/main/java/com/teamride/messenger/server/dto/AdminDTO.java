@@ -11,7 +11,6 @@ public class AdminDTO {
 	private int id;
 	private String email;
 	private String name;
-	private String loginType;
 	private String pwd;
 	private String profileImg;
 }
