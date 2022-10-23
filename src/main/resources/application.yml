@@ -7,7 +7,17 @@ spring:
       suffix: .html
   thymeleaf:
     prefix: classpath:/templates
+  datasource:
+    url: jdbc:mysql://localhost:3306/messenger?characterEncoding=UTF-8&serverTimezone=UTC
+    username: root
+    password: 1234
+    driver-class-name: com.mysql.cj.jdbc.Driver
 
+#mybatis:
+#  mapper-locations:
+#  - classpath:mappers/**/*.xml
+#  configuration:
+#    map-underscore-to-camel-case: true
 
 logging:
   logback:
