@@ -25,7 +25,5 @@ public class TestController {
     
     @GetMapping("test")
     public void mybatisTest() {
-    	List<AdminDTO> list = adminMapper.getAll();
-    	log.info(list.toString());
     }
 }
