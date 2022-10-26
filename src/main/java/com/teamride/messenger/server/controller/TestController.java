@@ -25,5 +25,6 @@ public class TestController {
     
     @GetMapping("test")
     public void mybatisTest() {
+        
     }
 }
