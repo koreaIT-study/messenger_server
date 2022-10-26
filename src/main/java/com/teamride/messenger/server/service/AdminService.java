@@ -1,5 +1,6 @@
 package com.teamride.messenger.server.service;
 
+import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.teamride.messenger.server.dto.AdminDTO;
@@ -22,5 +23,13 @@ public class AdminService {
 			return;
 		}
 		log.info(adminDTO.getName() + " 가입된 유저");
+	}
+
+	public AdminDTO getUserInfo(AdminDTO adminDTO) throws NotFoundException {
+		final AdminDTO userInfo = adminMapper.getUserInfo(adminDTO);
+		if (userInfo == null) {
+			throw new NotFoundException("not found user");
+		}
+		return userInfo;
 	}
 }

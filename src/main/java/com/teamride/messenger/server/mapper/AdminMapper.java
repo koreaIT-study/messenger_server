@@ -18,5 +18,8 @@ public interface AdminMapper {
 	
 	// 회원 가입 
 	public int saveUser(AdminDTO adminDTO);
+
+	// 회원 정보 가져오기
+	public AdminDTO getUserInfo(AdminDTO adminDTO);
 	
 }
