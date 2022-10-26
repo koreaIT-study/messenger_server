@@ -34,7 +34,7 @@ public class MybatisConfig {
 				new PathMatchingResourcePatternResolver().getResources("classpath:/mappers/**/*.xml")); // Mapper xml파일의
 																										// 위치를 명시
 		// mapper.xml 의 resultType 패키지 주소 생략
-		sqlSessionFactoryBean.setTypeAliasesPackage("com.teamride.messenger.server.dto");
+//		sqlSessionFactoryBean.setTypeAliasesPackage("com.teamride.messenger.server.dto");
 		return sqlSessionFactoryBean.getObject();
 
 	}

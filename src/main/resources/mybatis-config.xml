@@ -10,4 +10,9 @@
 		<!-- 쿼리에 보내는 파라미터가 null인 경우, 오류가 발생하는 것 방지 -->
 		<setting name="jdbcTypeForNull" value="NULL" />
 	</settings>
+
+	<typeAliases>
+		<typeAlias alias="AdminDTO" type="com.teamride.messenger.server.dto.AdminDTO" />
+	</typeAliases>
+
 </configuration>
