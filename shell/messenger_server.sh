@@ -14,7 +14,7 @@ stop_server() {
 
 start_server() {
   echo "container start~~"
-  docker run --name messenger-server -d -p 12000:12000 shmin7777/messenger-server
+  docker run -it --name messenger-server -d -p 12000:12000 -v /home/mshmsh0814/storage/logs:/tmp/logs shmin7777/messenger-server
 }
 
 # input argument check & execute
