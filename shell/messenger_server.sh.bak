@@ -18,12 +18,12 @@ start_server() {
   MYSQL=`docker ps -aq -f 'NAME=mysql'
   if [[ -z $MYSQL ]]; then
     echo "MYSQL STARTING..."
-	docker run --name mysql -d -p 3306:3306 -e MYSQL_ROOT_PASSWORD=1234 -v /home/mshmsh0814/storage/mysql:/var/lib/mysql mysql
+	docker run --name mysql -d -p 3306:3306 -e MYSQL_ROOT_PASSWORD=1234 -v /home/mshmsh0814/storage/mysql:/var/lib/mysql --network server-net mysql
 	echo "MYSQL STARTED"
   else
     echo "MYSQL is already running"
   fi
-  docker run -it --name messenger-server -d -p 12000:12000 -v /home/mshmsh0814/storage/logs:/tmp/logs shmin7777/messenger-server
+  docker run -it --name messenger-server -d -p 12000:12000 -v /home/mshmsh0814/storage/logs:/tmp/logs --network server-net shmin7777/messenger-server
 }
 
 # input argument check & execute
