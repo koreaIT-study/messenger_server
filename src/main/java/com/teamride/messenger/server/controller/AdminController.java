@@ -18,7 +18,7 @@ public class AdminController {
 
 	@PostMapping("/social_login")
 	public void socialLogin(@RequestBody AdminDTO adminDTO) {
-		log.info("server 들어옴");
+		log.info("server 들어옴"  + adminDTO);
 		adminService.checkAndInsertUser(adminDTO);
 	}
 }
