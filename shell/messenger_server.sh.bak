@@ -15,7 +15,7 @@ stop_server() {
 
 start_server() {
   echo "container start~~"
-  MYSQL=`docker ps -aq -f 'NAME=mysql'
+  MYSQL=`docker ps -aq -f 'NAME=mysql'`
   if [[ -z $MYSQL ]]; then
     echo "MYSQL STARTING..."
 	docker run --name mysql -d -p 3306:3306 -e MYSQL_ROOT_PASSWORD=1234 -v /home/mshmsh0814/storage/mysql:/var/lib/mysql --network server-net mysql
