@@ -1,4 +1,4 @@
 FROM openjdk:8-jdk-alpine
-ARG JAR_FILE=messenger-*.jar
-COPY ${JAR_FILE} messenger-server.jar
-ENTRYPOINT ["java","-jar","messenger-server.jar"]
+ARG JAR_FILE=messenger_server*.jar
+COPY ${JAR_FILE} messenger_server.jar
+ENTRYPOINT ["java","-jar","messenger_server.jar"]
