@@ -1,77 +1,21 @@
 #!/bin/sh
 
-#MTF_HOME='/home/openlabs/deploy/mtf-admintools'
-if [ "${MTF_HOME:-}" = "" ];
-    then MTF_HOME="$(dirname "$(cd "$(dirname "$0")"; "pwd")")";
-fi
-MTF_LIBS="${MTF_HOME}/libs"
-MTF_CONF="${MTF_HOME}/conf"
-MTF_LOGS="${MTF_HOME}/logs"
-IGNITE_HOME="${MTF_HOME}/ignite"
-echo "MTF_HOME dir : $MTF_HOME"
-
-JAR_FILE=`find $MTF_HOME -name mtf-admintools-*.jar`
-echo "server JAR file : $JAR_FILE"
-
-print_usage() {
-  echo "mtf-admintools usage:"
-  echo "    ./mtf-admintools.sh [option arguments] [start|stop|restart]"
-  echo "    --help, -h, ?)"
-  echo "         : print this message"
-  echo "    --config, -c {config file location})"
-  echo "         : application.yml config file location"
-  echo "    --rest.port, -r {port number})"
-  echo "         : WAS port for execute REST API"
-  echo "    start|stop|restart) server start | stop | restart"
-  exit 0
-}
-
-MAX_WAIT_CNT=3
-CURRENT_WAIT_CNT=0
-wait_graceful_shutdown() {
-  echo "Process $1 health check..."
-  PID=`ps -ef | grep $1 | grep spring | grep -v grep | awk '{print $2}'`
-  if [[ -z $PID ]]; then
-    echo "Process $1 shutdown complete!"
-  else
-    echo "wait 5 seconds..."
-    sleep 5
-    if [[ $CURRENT_WAIT_CNT -lt $MAX_WAIT_CNT ]]; then
-      CURRENT_WAIT_CNT=$CURRENT_WAIT_CNT+1
-      wait_graceful_shutdown $PID
-    else
-      echo "failed graceful shutdown!!!"
-      echo "execute force kill process $PID"
-      kill -15 $PID
-    fi
-  fi
-}
-
 stop_server() {
-  PROC=`ps aux | grep mtf-admintools- | grep spring`
-  if [[ $PROC == *"mtf-admintools-"* ]]; then
+  PROC=`docker ps -aq  -f 'NAME=messenger-server'`
+  echo $PROC
+  if [[ -n $PROC ]]; then
     echo "Process is running."
-    PID=`ps -ef | grep mtf-admintools- | grep spring | grep -v grep | awk '{print $2}'`
-    kill -9 $PID
-    wait_graceful_shutdown $PID
+    `docker stop $PROC`
+	`docker rm $PROC`
+	echo "process stop"
   else
     echo "Process is not running."
   fi
 }
 
-JVM_OPTS="-Xms4096m -Xmx4096m -server -XX:+UseG1GC -XX:MaxGCPauseMillis=200 -XX:+DisableExplicitGC \
-          -verbose:gc -XX:+PrintGCDetails -XX:-PrintGCTimeStamps -Xloggc:$MTF_LOGS/mtf-admintools-gc.log \
-          -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=$MTF_LOGS -XX:+UseGCOverheadLimit"
-SERVER_OPTS="-DIGNITE_HOME=$IGNITE_HOME -Dmtf.home=$MTF_HOME -Dspring.profiles.active=prod"
-APP_ARGS=""
-
 start_server() {
-  SERVER_OPTS="$SERVER_OPTS -Dspring.config.location=optional:file:$MTF_CONF/"
-  echo "server options : $JVM_OPTS $SERVER_OPTS"
-  echo "application arguments : $APP_ARGS"
-
-  # execute server
-  nohup java -jar $JVM_OPTS $SERVER_OPTS $JAR_FILE $APP_ARGS 1> /dev/null 2>&1 & 
+  echo "container start~~"
+  `docker run --name messenger-server -d -p 12000:12000 shmin7777/messenger-server`
 }
 
 # input argument check & execute
@@ -80,7 +24,7 @@ do
     case "$1" in
         --help|-h|?) print_usage;;
         --config|-c) shift
-                   MTF_CONF=$1;;
+                   SERVER_CONF=$1;;
         --rest.port|-r) shift
                    APP_ARGS="$APP_ARGS --rest.port=$1";;
         start) start_server;;
