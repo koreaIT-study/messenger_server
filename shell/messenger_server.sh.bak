@@ -6,7 +6,6 @@ stop_server() {
     echo "Process is running."
     docker stop $PROC
     docker rm $PROC
-    docker rmi $(docker images -aq shmin7777/messenger-server)
     echo "Process stoped"
   else
     echo "Process is not running."
