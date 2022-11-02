@@ -22,4 +22,13 @@
 		VALUES
 		(#{email}, #{name}, #{pwd}, #{profileImg})
 	</insert>
+	
+	<select id="getUserInfo" resultType="AdminDTO">
+		select 
+			*
+		from
+			admin
+		where
+			email = #{email} and pwd = #{pwd}
+	</select>
 </mapper>
