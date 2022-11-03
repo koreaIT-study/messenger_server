@@ -48,4 +48,14 @@ public class AdminController {
             return new RestResponse(1, e.getLocalizedMessage(), null);
         }
     }
+
+    @PostMapping("/signUp")
+    public RestResponse signUp(@RequestBody AdminDTO adminDTO) {
+        try {
+            return new RestResponse(adminService.saveUser(adminDTO));
+        } catch (Exception e) {
+            log.error("saveUser error", e.getLocalizedMessage());
+            return new RestResponse(1, e.getLocalizedMessage(), null);
+        }
+    }
 }
