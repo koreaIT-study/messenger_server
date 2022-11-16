@@ -16,8 +16,8 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @Slf4j
 public class MailService {
-    private final JavaMailSenderImpl mailSender;
 
+    private JavaMailSenderImpl mailSender;
     private int authNumber;
     // 난수 발생(여러분들 맘대러)
 

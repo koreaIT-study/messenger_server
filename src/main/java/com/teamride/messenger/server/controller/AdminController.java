@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.teamride.messenger.server.dto.AdminDTO;
 import com.teamride.messenger.server.service.AdminService;
-import com.teamride.messenger.server.util.RestResponse;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,32 +29,29 @@ public class AdminController {
     }
 
     @PostMapping("/loginAction")
-    public RestResponse loginAction(@RequestBody AdminDTO adminDTO) {
+    public AdminDTO loginAction(@RequestBody AdminDTO adminDTO) {
         try {
-            final AdminDTO userInfo = adminService.getUserInfo(adminDTO);
-            return new RestResponse(userInfo);
+            return adminService.getUserInfo(adminDTO);
         } catch (NotFoundException e) {
-            return new RestResponse(1, e.getLocalizedMessage(), null);
+            return null;
         }
     }
 
     @GetMapping("/smtpRequest")
-    public RestResponse smtp(@RequestParam String email) {
+    public String smtp(@RequestParam String email) {
         try {
-            return new RestResponse(mailService.joinEmail(email));
+            return mailService.joinEmail(email);
         } catch (MessagingException e) {
-            log.error("mail send error", e.getLocalizedMessage());
-            return new RestResponse(1, e.getLocalizedMessage(), null);
+            return null;
         }
     }
 
     @PostMapping("/signUp")
-    public RestResponse signUp(@RequestBody AdminDTO adminDTO) {
+    public Integer signUp(@RequestBody AdminDTO adminDTO) {
         try {
-            return new RestResponse(adminService.saveUser(adminDTO));
+            return adminService.saveUser(adminDTO);
         } catch (Exception e) {
-            log.error("saveUser error", e.getLocalizedMessage());
-            return new RestResponse(1, e.getLocalizedMessage(), null);
+            return 0;
         }
     }
 }
