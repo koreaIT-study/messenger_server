@@ -8,18 +8,27 @@
 <mapper
 	namespace="com.teamride.messenger.server.mapper.AdminMapper">
 	<select id="getAll" resultType="AdminDTO">
-		select * from admin
+		select * from user
 	</select>
 
 	<select id="checkExistUser" resultType="Integer">
 		select count(*) from
-		admin where email = #{email}
+		user where email = #{email}
 	</select>
 
 	<insert id="saveUser">
 		INSERT INTO
-		`messenger`.`admin`(`email`,`name`,`pwd`,`profile_img`)
+		`messenger`.`user`(`email`,`name`,`pwd`,`profile_img`)
 		VALUES
 		(#{email}, #{name}, #{pwd}, #{profileImg})
 	</insert>
+	
+	<select id="getUserInfo" resultType="AdminDTO">
+		select 
+			*
+		from
+			user
+		where
+			email = #{email} and pwd = #{pwd}
+	</select>
 </mapper>
