@@ -32,6 +32,10 @@ dependencies {
     //implementation ('org.springframework.boot:spring-boot-starter-data-mongodb')
 	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.2.0'
 	runtimeOnly 'mysql:mysql-connector-java:8.0.25'
+	
+	implementation("org.springframework.kafka:spring-kafka")
+	testImplementation("org.springframework.kafka:spring-kafka-test")
+
 	// https://mvnrepository.com/artifact/javax.mail/javax.mail-api
 	implementation 'javax.mail:javax.mail-api:1.6.2'
 	// https://mvnrepository.com/artifact/org.springframework/spring-context-support

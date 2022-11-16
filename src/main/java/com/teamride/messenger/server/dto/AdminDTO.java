@@ -8,9 +8,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AdminDTO {
-	private int id;
+	private int id; // uuid
 	private String email;
 	private String name;
 	private String pwd;
-	private String profileImg;
+	private String profilePath; // 나중에
 }
