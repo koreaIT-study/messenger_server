@@ -12,7 +12,7 @@
 	</select>
 
 	<insert id="insertRoom">
-		INSERT INTO c_room(room_id, room_name. is_group)
+		INSERT INTO c_room(room_id, room_name, is_group)
 		VALUES (#{roomId}, #{roomName}, #{isGroup})
 	</insert>
 </mapper>
