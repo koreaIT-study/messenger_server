@@ -13,7 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 @Slf4j
 public class KafkaController {
-    private static final String topicName = "f8c67dc3ae0a3265";
+    private static final String topicName = "chat-client";
     private static final String chatServer = KafkaConstants.CHAT_SERVER;
 
     @Autowired
@@ -22,11 +22,13 @@ public class KafkaController {
     @KafkaListener(topics = chatServer, groupId = KafkaConstants.GROUP_ID)
     public void listen(ChatMessageDTO message) {
         System.out.println("Received Msg chatServer " + message);
+        // client에서 message받음
         // message의 room id확인
         // 해당 room에 있는 사용자들의 id를 알아내서 send
         // topic : user id
-
-        //반복문 처리 필요
+        
+        // message db저장
+        
         kafkaTemplate.send(topicName, message);
     }
 
