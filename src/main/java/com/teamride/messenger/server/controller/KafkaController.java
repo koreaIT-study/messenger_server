@@ -3,6 +3,7 @@ package com.teamride.messenger.server.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.teamride.messenger.server.config.KafkaConstants;
@@ -20,7 +21,7 @@ public class KafkaController {
     private KafkaTemplate<String, ChatMessageDTO> kafkaTemplate;
 
     @KafkaListener(topics = chatServer, groupId = KafkaConstants.GROUP_ID)
-    public void listen(ChatMessageDTO message) {
+    public void listen(ChatMessageDTO message, Acknowledgment ack) {
         System.out.println("Received Msg chatServer " + message);
         // client에서 message받음
         // message의 room id확인
@@ -30,6 +31,7 @@ public class KafkaController {
         // message db저장
         
         kafkaTemplate.send(topicName, message);
+        ack.acknowledge();
     }
 
 }
