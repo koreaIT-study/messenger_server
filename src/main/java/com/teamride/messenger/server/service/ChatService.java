@@ -2,6 +2,7 @@ package com.teamride.messenger.server.service;
 
 import java.util.List;
 
+import com.teamride.messenger.server.dto.ChatRoomDTO;
 import org.springframework.stereotype.Service;
 
 import com.teamride.messenger.server.dto.ChatMessageDTO;
@@ -18,6 +19,24 @@ public class ChatService {
 
 	public List<ChatMessageDTO> getAllMessageWithRoomId(String roomId) {
 		return chatMapper.getAllMessageWithRoomId(roomId);
+	}
+
+	public ChatRoomDTO mkRoom(ChatRoomDTO room){
+		// uuid 만들고
+		// insert
+		boolean flag = true;
+		ChatRoomDTO room2 = null;
+		while(flag){
+			try {
+				room2 = ChatRoomDTO.create(room);
+				chatMapper.insertRoom(room2);
+				flag = false;
+			} catch (Exception e) {
+				log.error("UUID Duplicate then retry");
+			}
+		}
+
+		return room2;
 	}
 
 }

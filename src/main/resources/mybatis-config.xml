@@ -14,6 +14,7 @@
 	<typeAliases>
 		<typeAlias alias="AdminDTO" type="com.teamride.messenger.server.dto.AdminDTO" />
 		<typeAlias alias="ChatMessageDTO" type="com.teamride.messenger.server.dto.ChatMessageDTO" />
+		<typeAlias alias="ChatRoomDTO" type="com.teamride.messenger.server.dto.ChatRoomDTO" />
 	</typeAliases>
 
 </configuration>
