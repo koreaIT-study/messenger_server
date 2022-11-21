@@ -30,9 +30,14 @@ public class ChatService {
 			try {
 				room2 = ChatRoomDTO.create(room);
 				chatMapper.insertRoom(room2);
+
+				for(String id : room.getUserId()){
+
+				}
+
 				flag = false;
 			} catch (Exception e) {
-				log.error("UUID Duplicate then retry");
+				log.error("UUID Duplicate then retry\n", e.getLocalizedMessage());
 			}
 		}
 
