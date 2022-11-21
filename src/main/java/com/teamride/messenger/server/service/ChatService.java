@@ -21,22 +21,23 @@ public class ChatService {
 		return chatMapper.getAllMessageWithRoomId(roomId);
 	}
 
-	public ChatRoomDTO mkRoom(ChatRoomDTO room){
+	public ChatRoomDTO mkRoom(ChatRoomDTO room) {
 		// uuid 만들고
 		// insert
-		boolean flag = true;
+		int makeCnt = 0;
 		ChatRoomDTO room2 = null;
-		while(flag){
+
+		while (makeCnt < 3) {
 			try {
 				room2 = ChatRoomDTO.create(room);
 				chatMapper.insertRoom(room2);
 
-				for(String id : room.getUserId()){
+				for (String id : room.getUserId()) {
 
 				}
 
-				flag = false;
 			} catch (Exception e) {
+				makeCnt++;
 				log.error("UUID Duplicate then retry\n", e.getLocalizedMessage());
 			}
 		}
