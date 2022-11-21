@@ -10,4 +10,9 @@
 	<select id="getAllMessageWithRoomId" resultType="ChatMessageDTO">
 		SELECT * FROM c_message where room_id = #{room_id}
 	</select>
+
+	<insert id="insertRoom">
+		INSERT INTO c_room(room_id, room_name, is_group)
+		VALUES (#{roomId}, #{roomName}, #{isGroup})
+	</insert>
 </mapper>
