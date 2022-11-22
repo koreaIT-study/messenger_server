@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class FriendInfoDTO {
-	private int id; // friend id
+	private int friendId; // friend id
 	private String email;
 	private String name;
 	private String profileImg;

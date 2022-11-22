@@ -58,8 +58,9 @@ public class AdminController {
         }
     }
     
-    @PostMapping("/getFriends")
-    public List<FriendInfoDTO> getFriends(int userId) throws Exception{
+    @GetMapping("/getFriends")
+    public List<FriendInfoDTO> getFriends(int userId) throws NotFoundException {
     	return adminService.getFriendList(userId);
     }
+  
 }
