@@ -1,5 +1,7 @@
 package com.teamride.messenger.server.controller;
 
+import java.util.List;
+
 import javax.mail.MessagingException;
 
 import org.apache.ibatis.javassist.NotFoundException;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.teamride.messenger.server.dto.AdminDTO;
+import com.teamride.messenger.server.dto.FriendInfoDTO;
 import com.teamride.messenger.server.service.AdminService;
 
 import lombok.RequiredArgsConstructor;
@@ -53,5 +56,10 @@ public class AdminController {
         } catch (Exception e) {
             return 0;
         }
+    }
+    
+    @PostMapping("/getFriends")
+    public List<FriendInfoDTO> getFriends(int userId) throws Exception{
+    	return adminService.getFriendList(userId);
     }
 }

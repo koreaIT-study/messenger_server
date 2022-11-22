@@ -1,9 +1,12 @@
 package com.teamride.messenger.server.service;
 
+import java.util.List;
+
 import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.teamride.messenger.server.dto.AdminDTO;
+import com.teamride.messenger.server.dto.FriendInfoDTO;
 import com.teamride.messenger.server.mapper.AdminMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -13,31 +16,39 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @RequiredArgsConstructor
 public class AdminService {
-    private final AdminMapper adminMapper;
+	private final AdminMapper adminMapper;
 
-    public void checkAndInsertUser(AdminDTO adminDTO) {
-        if (adminMapper.checkExistUser(adminDTO.getEmail()) == 0) {
-            // 처음 회원가입
-            adminMapper.saveUser(adminDTO);
-            log.info(adminDTO.getName() + " 회원가입 완료");
-            return;
-        }
-        log.info(adminDTO.getName() + " 가입된 유저");
-    }
+	public void checkAndInsertUser(AdminDTO adminDTO) {
+		if (adminMapper.checkExistUser(adminDTO.getEmail()) == 0) {
+			// 처음 회원가입
+			adminMapper.saveUser(adminDTO);
+			log.info(adminDTO.getName() + " 회원가입 완료");
+			return;
+		}
+		log.info(adminDTO.getName() + " 가입된 유저");
+	}
 
-    public AdminDTO getUserInfo(AdminDTO adminDTO) throws NotFoundException {
-        final AdminDTO userInfo = adminMapper.getUserInfo(adminDTO);
-        if (userInfo == null) {
-            throw new NotFoundException("not found user");
-        }
-        return userInfo;
-    }
+	public AdminDTO getUserInfo(AdminDTO adminDTO) throws NotFoundException {
+		final AdminDTO userInfo = adminMapper.getUserInfo(adminDTO);
+		if (userInfo == null) {
+			throw new NotFoundException("not found user");
+		}
+		return userInfo;
+	}
 
-    public int saveUser(AdminDTO adminDTO) throws Exception {
-        final int result = adminMapper.saveUser(adminDTO);
-        if (result == 0) {
-            throw new Exception("not saved user");
-        }
-        return result;
-    }
+	public int saveUser(AdminDTO adminDTO) throws Exception {
+		final int result = adminMapper.saveUser(adminDTO);
+		if (result == 0) {
+			throw new Exception("not saved user");
+		}
+		return result;
+	}
+
+	public List<FriendInfoDTO> getFriendList(int userId) throws NotFoundException {
+		List<FriendInfoDTO> result = adminMapper.getFriendList(userId);
+		if(result.isEmpty()) {
+			throw new NotFoundException("not found friends");
+		}
+		return result;
+	}
 }

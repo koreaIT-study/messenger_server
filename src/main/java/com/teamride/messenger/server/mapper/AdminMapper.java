@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import com.teamride.messenger.server.dto.AdminDTO;
+import com.teamride.messenger.server.dto.FriendInfoDTO;
 
 @Mapper
 public interface AdminMapper {
@@ -21,5 +22,8 @@ public interface AdminMapper {
 
 	// 회원 정보 가져오기
 	public AdminDTO getUserInfo(AdminDTO adminDTO);
+	
+	// 친구 정보 가져오기
+	public List<FriendInfoDTO> getFriendList(int userId);
 	
 }

@@ -1,0 +1,33 @@
+server:
+  port: 12000
+
+spring:
+  mvc:
+    view:
+      suffix: .html
+  thymeleaf:
+    prefix: classpath:/templates
+  datasource:
+    url: jdbc:mysql://35.216.1.250:3306/messenger?characterEncoding=UTF-8&serverTimezone=UTC
+    username: root
+    password: 1234
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  
+#mybatis:
+#  mapper-locations:
+#  - classpath:mappers/**/*.xml
+#  configuration:
+#    map-underscore-to-camel-case: true
+
+logging:
+  logback:
+    rollingpolicy:
+      max-file-size: 100MB
+      max-history: 7
+  level:
+    root: INFO
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} [%4L] - %m%n"
+    file: "[%d{HH:mm:ss.SSS}][%-5level][%t][%logger.%method:line%line] - %msg%n"
+  file:
+    name: "${messenger.home:/tmp}/logs/messenger-server.log"
