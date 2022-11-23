@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.teamride.messenger.server.dto.AdminDTO;
+import com.teamride.messenger.server.dto.UserDTO;
 import com.teamride.messenger.server.dto.FriendInfoDTO;
-import com.teamride.messenger.server.service.AdminService;
+import com.teamride.messenger.server.service.UserService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,18 +21,18 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-public class AdminController {
-    private final AdminService adminService;
+public class UserController {
+    private final UserService adminService;
     private final MailService mailService;
 
     @PostMapping("/social_login")
-    public void socialLogin(@RequestBody AdminDTO adminDTO) {
+    public void socialLogin(@RequestBody UserDTO adminDTO) {
         log.info("server 들어옴");
         adminService.checkAndInsertUser(adminDTO);
     }
 
     @PostMapping("/loginAction")
-    public AdminDTO loginAction(@RequestBody AdminDTO adminDTO) {
+    public UserDTO loginAction(@RequestBody UserDTO adminDTO) {
         try {
             return adminService.getUserInfo(adminDTO);
         } catch (NotFoundException e) {
@@ -50,7 +50,7 @@ public class AdminController {
     }
 
     @PostMapping("/signUp")
-    public Integer signUp(@RequestBody AdminDTO adminDTO) {
+    public Integer signUp(@RequestBody UserDTO adminDTO) {
         try {
             return adminService.saveUser(adminDTO);
         } catch (Exception e) {

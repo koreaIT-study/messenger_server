@@ -2,11 +2,11 @@ package com.teamride.messenger.server.service;
 
 import java.util.List;
 
-import com.teamride.messenger.server.dto.ChatRoomDTO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.teamride.messenger.server.dto.ChatMessageDTO;
+import com.teamride.messenger.server.dto.ChatRoomDTO;
 import com.teamride.messenger.server.mapper.ChatMapper;
 
 import lombok.RequiredArgsConstructor;

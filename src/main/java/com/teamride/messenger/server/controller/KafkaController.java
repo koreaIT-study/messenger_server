@@ -27,9 +27,9 @@ public class KafkaController {
         // message의 room id확인
         // 해당 room에 있는 사용자들의 id를 알아내서 send
         // topic : user id
-        
+
         // message db저장
-        
+
         kafkaTemplate.send(topicName, message);
         ack.acknowledge();
     }

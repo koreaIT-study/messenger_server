@@ -6,8 +6,8 @@
 
 <!-- Mapper를 사용하는 Repository의 전체 경로를 적어줘야함. -->
 <mapper
-	namespace="com.teamride.messenger.server.mapper.AdminMapper">
-	<select id="getAll" resultType="AdminDTO">
+	namespace="com.teamride.messenger.server.mapper.UserMapper">
+	<select id="getAll" resultType="UserDTO">
 		select * from user
 	</select>
 
@@ -24,7 +24,7 @@
 		(#{email}, #{name}, #{pwd}, #{profileImg})
 	</insert>
 
-	<select id="getUserInfo" resultType="AdminDTO">
+	<select id="getUserInfo" resultType="UserDTO">
 		select
 		*
 		from

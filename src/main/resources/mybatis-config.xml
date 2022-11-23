@@ -12,7 +12,7 @@
 	</settings>
 
 	<typeAliases>
-		<typeAlias alias="AdminDTO" type="com.teamride.messenger.server.dto.AdminDTO" />
+		<typeAlias alias="UserDTO" type="com.teamride.messenger.server.dto.UserDTO" />
 		<typeAlias alias="ChatMessageDTO" type="com.teamride.messenger.server.dto.ChatMessageDTO" />
 		<typeAlias alias="ChatRoomDTO" type="com.teamride.messenger.server.dto.ChatRoomDTO" />
 		<typeAlias alias="FriendDTO" type="com.teamride.messenger.server.dto.FriendDTO" />

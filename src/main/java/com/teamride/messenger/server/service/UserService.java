@@ -5,9 +5,9 @@ import java.util.List;
 import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.teamride.messenger.server.dto.AdminDTO;
+import com.teamride.messenger.server.dto.UserDTO;
 import com.teamride.messenger.server.dto.FriendInfoDTO;
-import com.teamride.messenger.server.mapper.AdminMapper;
+import com.teamride.messenger.server.mapper.UserMapper;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,10 +15,10 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class AdminService {
-	private final AdminMapper adminMapper;
+public class UserService {
+	private final UserMapper adminMapper;
 
-	public void checkAndInsertUser(AdminDTO adminDTO) {
+	public void checkAndInsertUser(UserDTO adminDTO) {
 		if (adminMapper.checkExistUser(adminDTO.getEmail()) == 0) {
 			// 처음 회원가입
 			adminMapper.saveUser(adminDTO);
@@ -28,15 +28,15 @@ public class AdminService {
 		log.info(adminDTO.getName() + " 가입된 유저");
 	}
 
-	public AdminDTO getUserInfo(AdminDTO adminDTO) throws NotFoundException {
-		final AdminDTO userInfo = adminMapper.getUserInfo(adminDTO);
+	public UserDTO getUserInfo(UserDTO adminDTO) throws NotFoundException {
+		final UserDTO userInfo = adminMapper.getUserInfo(adminDTO);
 		if (userInfo == null) {
 			throw new NotFoundException("not found user");
 		}
 		return userInfo;
 	}
 
-	public int saveUser(AdminDTO adminDTO) throws Exception {
+	public int saveUser(UserDTO adminDTO) throws Exception {
 		final int result = adminMapper.saveUser(adminDTO);
 		if (result == 0) {
 			throw new Exception("not saved user");
