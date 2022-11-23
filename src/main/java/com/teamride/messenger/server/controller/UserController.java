@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.teamride.messenger.server.dto.UserDTO;
 import com.teamride.messenger.server.dto.FriendInfoDTO;
+import com.teamride.messenger.server.dto.UserDTO;
 import com.teamride.messenger.server.service.UserService;
 
 import lombok.RequiredArgsConstructor;
@@ -26,15 +26,15 @@ public class UserController {
     private final MailService mailService;
 
     @PostMapping("/social_login")
-    public void socialLogin(@RequestBody UserDTO adminDTO) {
+    public void socialLogin(@RequestBody UserDTO userDTO) {
         log.info("server 들어옴");
-        adminService.checkAndInsertUser(adminDTO);
+        adminService.checkAndInsertUser(userDTO);
     }
 
     @PostMapping("/loginAction")
-    public UserDTO loginAction(@RequestBody UserDTO adminDTO) {
+    public UserDTO loginAction(@RequestBody UserDTO userDTO) {
         try {
-            return adminService.getUserInfo(adminDTO);
+            return adminService.getUserInfo(userDTO);
         } catch (NotFoundException e) {
             return null;
         }
@@ -50,17 +50,17 @@ public class UserController {
     }
 
     @PostMapping("/signUp")
-    public Integer signUp(@RequestBody UserDTO adminDTO) {
+    public Integer signUp(@RequestBody UserDTO userDTO) {
         try {
-            return adminService.saveUser(adminDTO);
+            return adminService.saveUser(userDTO);
         } catch (Exception e) {
             return 0;
         }
     }
-    
+
     @GetMapping("/getFriends")
     public List<FriendInfoDTO> getFriends(int userId) throws NotFoundException {
-    	return adminService.getFriendList(userId);
+        return adminService.getFriendList(userId);
     }
-  
+
 }
