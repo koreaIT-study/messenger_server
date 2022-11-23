@@ -33,6 +33,16 @@
 		email =
 		#{email} and pwd = #{pwd}
 	</select>
+	
+	<select id="getUserInfoWithSocial" resultType="UserDTO">
+		select
+		*
+		from
+		user
+		where
+		email =
+		#{email}
+	</select>
 
 	<select id="getFriendList" resultType="FriendInfoDTO">
 		select

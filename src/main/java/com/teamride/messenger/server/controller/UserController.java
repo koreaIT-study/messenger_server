@@ -26,9 +26,9 @@ public class UserController {
     private final MailService mailService;
 
     @PostMapping("/social_login")
-    public void socialLogin(@RequestBody UserDTO userDTO) {
+    public UserDTO socialLogin(@RequestBody UserDTO userDTO) {
         log.info("server 들어옴");
-        adminService.checkAndInsertUser(userDTO);
+        return adminService.checkAndInsertUser(userDTO);
     }
 
     @PostMapping("/loginAction")

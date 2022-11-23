@@ -23,6 +23,8 @@ public interface UserMapper {
 	// 회원 정보 가져오기
 	public UserDTO getUserInfo(UserDTO adminDTO);
 	
+	public UserDTO getUserInfoWithSocial(UserDTO adminDTO);
+	
 	// 친구 정보 가져오기
 	public List<FriendInfoDTO> getFriendList(int userId);
 	

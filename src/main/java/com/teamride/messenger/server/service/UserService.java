@@ -16,20 +16,20 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @RequiredArgsConstructor
 public class UserService {
-    private final UserMapper adminMapper;
+    private final UserMapper userMapper;
 
-    public void checkAndInsertUser(UserDTO userDTO) {
-        if (adminMapper.checkExistUser(userDTO.getEmail()) == 0) {
+    public UserDTO checkAndInsertUser(UserDTO userDTO) {
+        if (userMapper.checkExistUser(userDTO.getEmail()) == 0) {
             // 처음 회원가입
-            adminMapper.saveUser(userDTO);
+        	userMapper.saveUser(userDTO);
             log.info(userDTO.getName() + " 회원가입 완료");
-            return;
         }
         log.info(userDTO.getName() + " 가입된 유저");
+        return userMapper.getUserInfoWithSocial(userDTO);
     }
 
     public UserDTO getUserInfo(UserDTO userDTO) throws NotFoundException {
-        final UserDTO userInfo = adminMapper.getUserInfo(userDTO);
+        final UserDTO userInfo = userMapper.getUserInfo(userDTO);
         if (userInfo == null) {
             throw new NotFoundException("not found user");
         }
@@ -39,7 +39,7 @@ public class UserService {
     public int saveUser(UserDTO userDTO) throws Exception {
         userDTO.getProfilePath();
 
-        final int result = adminMapper.saveUser(userDTO);
+        final int result = userMapper.saveUser(userDTO);
         if (result == 0) {
             throw new Exception("not saved user");
         }
@@ -47,7 +47,7 @@ public class UserService {
     }
 
     public List<FriendInfoDTO> getFriendList(int userId) throws NotFoundException {
-        List<FriendInfoDTO> result = adminMapper.getFriendList(userId);
+        List<FriendInfoDTO> result = userMapper.getFriendList(userId);
         if (result.isEmpty()) {
             throw new NotFoundException("not found friends");
         }
