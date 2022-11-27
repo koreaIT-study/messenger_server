@@ -14,4 +14,5 @@ public class ChatMessageDTO {
     private String writer;
     private String message;
     private String timestamp;
+    private String writerName;
 }
