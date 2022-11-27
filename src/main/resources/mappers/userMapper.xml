@@ -21,7 +21,7 @@
 		INSERT INTO
 		`messenger`.`user`(`email`,`name`,`pwd`,`profile_img`)
 		VALUES
-		(#{email}, #{name}, #{pwd}, #{profileImg})
+		(#{email}, #{name}, #{pwd}, #{profilePath})
 	</insert>
 
 	<select id="getUserInfo" resultType="UserDTO">

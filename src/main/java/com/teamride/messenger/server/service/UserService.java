@@ -48,9 +48,9 @@ public class UserService {
 
     public List<FriendInfoDTO> getFriendList(int userId) throws NotFoundException {
         List<FriendInfoDTO> result = userMapper.getFriendList(userId);
-        if (result.isEmpty()) {
-            throw new NotFoundException("not found friends");
-        }
+//        if (result.isEmpty()) {
+//            throw new NotFoundException("not found friends");
+//        }
         return result;
     }
 }
