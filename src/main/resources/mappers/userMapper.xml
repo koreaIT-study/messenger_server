@@ -46,29 +46,25 @@
 
 	<select id="getFriendList" resultType="FriendInfoDTO">
 		select
-		f.friend_id
-		, u.email
-		,
-		u.name
-		, ifnull(u.profile_img, '') profile_img
-		, ifnull(m.ROOM_ID, '')
-		ROOM_ID
+			f.friend_id
+			, u.email
+			, u.name
+			, ifnull(u.profile_img, '') profile_img
+			, ifnull(m.ROOM_ID, '') ROOM_ID
 		from friend f
 		join user u
 		on f.friend_id = u.id
-		and f.user_id =
-		#{userId}
+		and f.user_id = #{userId}
 		left join (
-		select
-		r.room_id
-		, m.ID
-		from c_room r
-		join
-		C_ROOM_MEMBER m
-		on r.room_id = m.ROOM_ID
-		and r.is_group = 'N'
+			select
+				r.room_id
+				, m.ID
+			from c_room r
+			join C_ROOM_MEMBER m
+				on r.room_id = m.ROOM_ID
+				and r.is_group = 'N'
+				and m.ID = #{userId}
 		) m
-		on u.id
-		= m.ID
+		on u.id = m.ID
 	</select>
 </mapper>

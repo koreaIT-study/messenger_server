@@ -30,6 +30,7 @@ public class ChatRoomDTO {
         room.setRoomId(UUID.randomUUID().toString());
         room.setRoomName(room2.getRoomName());
         room.setIsGroup(room2.getIsGroup());
+        room.setUserId(room2.getUserId());
         return room;
     }
 }

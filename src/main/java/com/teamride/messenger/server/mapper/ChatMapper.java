@@ -12,6 +12,7 @@ public interface ChatMapper {
 	// 해당 roomId의 message 전체 조회
 	public List<ChatMessageDTO> getAllMessageWithRoomId(String m_room_id);
 
-
 	public void insertRoom(ChatRoomDTO chatRoom);
+
+	public void insertRoomMember(ChatRoomDTO chatRoom);
 }

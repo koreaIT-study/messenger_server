@@ -26,27 +26,15 @@ public class ChatService {
 	public ChatRoomDTO mkRoom(ChatRoomDTO room) {
 		// uuid 만들고
 		// insert
-		int makeCnt = 0;
 		ChatRoomDTO room2 = null;
 
-		while (makeCnt < 3) {
-			try {
-				try {
-					room2 = ChatRoomDTO.create(room);
-					chatMapper.insertRoom(room2);
-				} catch (Exception e) {
-					makeCnt++;
-					log.error("UUID Duplicate then retry\n", e.getLocalizedMessage());
-				}
-
-				for (String id : room.getUserId()) {
-
-				}
-			} catch (Exception e) {
-				throw new RuntimeException("make room error", e);
-			}
-
-		}
+        try {
+            room2 = ChatRoomDTO.create(room);
+            chatMapper.insertRoom(room2);
+            chatMapper.insertRoomMember(room2);
+        } catch (Exception e) {
+            throw new RuntimeException("UUID Duplicate");
+        }
 
 		return room2;
 	}
