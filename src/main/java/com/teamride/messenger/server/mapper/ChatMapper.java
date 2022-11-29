@@ -2,10 +2,10 @@ package com.teamride.messenger.server.mapper;
 
 import java.util.List;
 
-import com.teamride.messenger.server.dto.ChatRoomDTO;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.teamride.messenger.server.dto.ChatMessageDTO;
+import com.teamride.messenger.server.dto.ChatRoomDTO;
 
 @Mapper
 public interface ChatMapper {

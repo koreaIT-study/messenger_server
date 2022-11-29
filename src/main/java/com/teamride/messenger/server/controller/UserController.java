@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.teamride.messenger.server.dto.AdminDTO;
 import com.teamride.messenger.server.dto.FriendInfoDTO;
-import com.teamride.messenger.server.service.AdminService;
+import com.teamride.messenger.server.dto.UserDTO;
+import com.teamride.messenger.server.service.UserService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,20 +21,20 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-public class AdminController {
-    private final AdminService adminService;
+public class UserController {
+    private final UserService adminService;
     private final MailService mailService;
 
     @PostMapping("/social_login")
-    public void socialLogin(@RequestBody AdminDTO adminDTO) {
+    public UserDTO socialLogin(@RequestBody UserDTO userDTO) {
         log.info("server 들어옴");
-        adminService.checkAndInsertUser(adminDTO);
+        return adminService.checkAndInsertUser(userDTO);
     }
 
     @PostMapping("/loginAction")
-    public AdminDTO loginAction(@RequestBody AdminDTO adminDTO) {
+    public UserDTO loginAction(@RequestBody UserDTO userDTO) {
         try {
-            return adminService.getUserInfo(adminDTO);
+            return adminService.getUserInfo(userDTO);
         } catch (NotFoundException e) {
             return null;
         }
@@ -50,17 +50,17 @@ public class AdminController {
     }
 
     @PostMapping("/signUp")
-    public Integer signUp(@RequestBody AdminDTO adminDTO) {
+    public Integer signUp(@RequestBody UserDTO userDTO) {
         try {
-            return adminService.saveUser(adminDTO);
+            return adminService.saveUser(userDTO);
         } catch (Exception e) {
             return 0;
         }
     }
-    
+
     @GetMapping("/getFriends")
     public List<FriendInfoDTO> getFriends(int userId) throws NotFoundException {
-    	return adminService.getFriendList(userId);
+        return adminService.getFriendList(userId);
     }
-  
+
 }

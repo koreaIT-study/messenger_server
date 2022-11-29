@@ -8,7 +8,8 @@
 <mapper
 	namespace="com.teamride.messenger.server.mapper.ChatMapper">
 	<select id="getAllMessageWithRoomId" resultType="ChatMessageDTO">
-		SELECT * FROM c_message where room_id = #{room_id}
+		SELECT room_id, writer, message, timestamp, name as writer_name FROM c_message m join user
+		u on u.id = m.writer where m.room_id=#{room_id}
 	</select>
 
 	<insert id="insertRoom">
