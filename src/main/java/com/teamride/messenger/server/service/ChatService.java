@@ -21,6 +21,9 @@ public class ChatService {
 	public List<ChatMessageDTO> getAllMessageWithRoomId(String roomId) {
 		return chatMapper.getAllMessageWithRoomId(roomId);
 	}
+	public List<ChatRoomDTO> getAllRoomWithUserId(String userId) {
+		return chatMapper.getAllRoomWithUserId(userId);
+	}
 
 	@Transactional(rollbackFor = RuntimeException.class)
 	public ChatRoomDTO mkRoom(ChatRoomDTO room) {

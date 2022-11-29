@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- 위 코드가 mapper 설정을 하는 코드 -->
-
 <!-- Mapper를 사용하는 Repository의 전체 경로를 적어줘야함. -->
 <mapper namespace="com.teamride.messenger.server.mapper.ChatMapper">
 	<select id="getAllMessageWithRoomId" resultType="ChatMessageDTO">
-		SELECT room_id, writer, message, timestamp, name as writer_name FROM c_message m join user
+		SELECT room_id,
+		writer, message, timestamp, name as writer_name FROM c_message m join
+		user
 		u on u.id = m.writer where m.room_id=#{room_id}
 	</select>
 
@@ -15,6 +14,47 @@
 		INSERT INTO c_room(room_id, room_name, is_group)
 		VALUES (#{roomId}, #{roomName}, #{isGroup})
 	</insert>
+	<select id="getAllRoomWithUserId" resultType="ChatRoomDTO">
+		WITH MSG AS (
+		  SELECT
+		    MSG.room_id
+		  , MSG.message
+		  , T.TIME
+		FROM c_message MSG
+		JOIN (
+		      SELECT
+		          room_id
+		         , MAX(timestamp) TIME
+		      FROM c_message
+		      GROUP BY room_id
+		    ) T
+		  ON MSG.ROOM_ID = T.ROOM_ID
+		  AND MSG.TIMESTAMP = T.TIME
+		)
+		SELECT MSG.ROOM_ID
+		     , MSG.MESSAGE
+		     , MSG.TIME
+		     , RNM.ROOM_NAME
+		     , CNT.CNT
+		FROM MSG
+		JOIN (
+		      SELECT
+		        CRM.ROOM_ID
+		       , R.room_name
+		      FROM c_room R
+		      JOIN C_ROOM_MEMBER CRM
+		          ON R.ROOM_ID = CRM.ROOM_ID
+		          AND CRM.ID = #{userId} <!-- 파라미터부분 -->
+		) RNM
+		  ON MSG.ROOM_ID = RNM.ROOM_ID
+		JOIN (
+		      SELECT ROOM_ID
+		           , COUNT(ID) CNT
+		      FROM C_ROOM_MEMBER
+		      GROUP BY ROOM_ID
+		) CNT
+		  ON CNT.ROOM_ID = MSG.ROOM_ID
+	</select>
 
 	<insert id="insertRoomMember" parameterType="ChatMessageDTO">
 		INSERT INTO C_ROOM_MEMBER(room_id, ID)
