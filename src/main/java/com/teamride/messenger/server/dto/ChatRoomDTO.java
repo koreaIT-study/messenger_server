@@ -3,6 +3,8 @@ package com.teamride.messenger.server.dto;
 import java.util.List;
 import java.util.UUID;
 
+import org.apache.kafka.common.protocol.types.Field.Str;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
@@ -24,6 +26,8 @@ public class ChatRoomDTO {
     private String time;
     private int cnt;
     private String isGroup;
+    private List<String> userId;
+
 
     public static ChatRoomDTO create(String roomName, String isGroup){
         ChatRoomDTO room = new ChatRoomDTO();
