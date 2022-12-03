@@ -36,7 +36,7 @@ public class UserController {
         try {
             return adminService.getUserInfo(userDTO);
         } catch (NotFoundException e) {
-            return null;
+            return null; 
         }
     }
 
