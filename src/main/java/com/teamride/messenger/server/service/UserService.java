@@ -53,4 +53,8 @@ public class UserService {
 //        }
         return result;
     }
+
+    public List<UserDTO> searchUser(String searchKey) {
+        return userMapper.searchUser(searchKey);
+    }
 }

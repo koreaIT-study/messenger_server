@@ -27,5 +27,7 @@ public interface UserMapper {
 	
 	// 친구 정보 가져오기
 	public List<FriendInfoDTO> getFriendList(int userId);
+
+    public List<UserDTO> searchUser(@Param("searchKey") String searchKey);
 	
 }

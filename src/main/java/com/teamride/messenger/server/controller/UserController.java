@@ -63,4 +63,8 @@ public class UserController {
         return adminService.getFriendList(userId);
     }
 
+    @GetMapping("/searchUser")
+    public List<UserDTO> searchUser(@RequestParam String searchKey){
+        return adminService.searchUser(searchKey);
+    }
 }
