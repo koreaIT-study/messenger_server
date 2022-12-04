@@ -49,10 +49,10 @@
 			f.friend_id
 			, u.email
 			, u.name
-			, ifnull(u.profile_img, '') profile_img
+			, ifnull(u.profile_path, '') profile_img
 			, ifnull(m.ROOM_ID, '') ROOM_ID
 		from FRIEND f
-		join user u
+		join USER u
 		on f.friend_id = u.id
 		and f.user_id = #{userId}
 		left join (
