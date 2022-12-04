@@ -16,26 +16,26 @@
 	</insert>
 	<select id="getAllRoomWithUserId" resultType="ChatRoomDTO">
 		WITH MSG AS (
-		  SELECT
-		    MSG.room_id
-		  , MSG.message
-		  , T.TIME
+		SELECT
+			MSG.room_id
+			, MSG.message
+			, T.TIME
 		FROM C_MESSAGE MSG
 		JOIN (
-		      SELECT
-		          room_id
-		         , MAX(timestamp) TIME
-		      FROM C_MESSAGE
-		      GROUP BY room_id
-		    ) T
-		  ON MSG.ROOM_ID = T.ROOM_ID
-		  AND MSG.TIMESTAMP = T.TIME
+			SELECT
+				room_id
+				, MAX(timestamp) TIME
+			FROM C_MESSAGE
+			GROUP BY room_id
+			) T
+		ON MSG.ROOM_ID = T.ROOM_ID
+		AND MSG.TIMESTAMP = T.TIME
 		)
 		SELECT MSG.ROOM_ID
-		     , MSG.MESSAGE
-		     , MSG.TIME
-		     , RNM.ROOM_NAME
-		     , CNT.CNT
+			, MSG.MESSAGE
+			, MSG.TIME
+			, RNM.ROOM_NAME
+			, CNT.CNT
 		FROM MSG
 		JOIN (
 		      SELECT
@@ -46,14 +46,14 @@
 		          ON R.ROOM_ID = CRM.ROOM_ID
 		          AND CRM.ID = #{userId} <!-- 파라미터부분 -->
 		) RNM
-		  ON MSG.ROOM_ID = RNM.ROOM_ID
+		ON MSG.ROOM_ID = RNM.ROOM_ID
 		JOIN (
-		      SELECT ROOM_ID
-		           , COUNT(ID) CNT
-		      FROM C_ROOM_MEMBER
-		      GROUP BY ROOM_ID
+			SELECT ROOM_ID
+				, COUNT(ID) CNT
+			FROM C_ROOM_MEMBER
+			GROUP BY ROOM_ID
 		) CNT
-		  ON CNT.ROOM_ID = MSG.ROOM_ID
+		ON CNT.ROOM_ID = MSG.ROOM_ID
 	</select>
 
 	<insert id="insertRoomMember" parameterType="ChatMessageDTO">
