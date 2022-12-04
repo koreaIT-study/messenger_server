@@ -24,6 +24,8 @@ public class ChatController {
 	@GetMapping("/get-chat-message")
 	public List<ChatMessageDTO> getChatMessage(String roomId) {
 		List<ChatMessageDTO> result = chatService.getAllMessageWithRoomId(roomId);
+		result.sort((o1,o2)->o1.getTimestamp().compareTo(o2.getTimestamp()));
+		
 		log.info("get chat message api");
 		log.info("roomId is {}, result :: {} ", roomId, result);
 		return result;
