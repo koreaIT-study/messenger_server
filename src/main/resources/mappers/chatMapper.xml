@@ -5,13 +5,13 @@
 <mapper namespace="com.teamride.messenger.server.mapper.ChatMapper">
 	<select id="getAllMessageWithRoomId" resultType="ChatMessageDTO">
 		SELECT room_id,
-		writer, message, timestamp, name as writer_name FROM c_message m join
-		user
+		writer, message, timestamp, name as writer_name FROM C_MESSAGE m join
+		USER
 		u on u.id = m.writer where m.room_id=#{room_id}
 	</select>
 
 	<insert id="insertRoom">
-		INSERT INTO c_room(room_id, room_name, is_group)
+		INSERT INTO C_ROOM(room_id, room_name, is_group)
 		VALUES (#{roomId}, #{roomName}, #{isGroup})
 	</insert>
 	<select id="getAllRoomWithUserId" resultType="ChatRoomDTO">
@@ -20,12 +20,12 @@
 		    MSG.room_id
 		  , MSG.message
 		  , T.TIME
-		FROM c_message MSG
+		FROM C_MESSAGE MSG
 		JOIN (
 		      SELECT
 		          room_id
 		         , MAX(timestamp) TIME
-		      FROM c_message
+		      FROM C_MESSAGE
 		      GROUP BY room_id
 		    ) T
 		  ON MSG.ROOM_ID = T.ROOM_ID
@@ -41,7 +41,7 @@
 		      SELECT
 		        CRM.ROOM_ID
 		       , R.room_name
-		      FROM c_room R
+		      FROM C_ROOM R
 		      JOIN C_ROOM_MEMBER CRM
 		          ON R.ROOM_ID = CRM.ROOM_ID
 		          AND CRM.ID = #{userId} <!-- 파라미터부분 -->

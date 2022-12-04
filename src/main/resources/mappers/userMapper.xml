@@ -8,18 +8,18 @@
 <mapper
 	namespace="com.teamride.messenger.server.mapper.UserMapper">
 	<select id="getAll" resultType="UserDTO">
-		select * from user
+		select * from USER
 	</select>
 
 	<select id="checkExistUser" resultType="Integer">
 		select count(*) from
-		user
+		USER
 		where email = #{email}
 	</select>
 
 	<insert id="saveUser">
 		INSERT INTO
-		`messenger`.`user`(`email`,`name`,`pwd`,`profile_img`)
+		`messenger`.`USER`(`email`,`name`,`pwd`,`profile_img`)
 		VALUES
 		(#{email}, #{name}, #{pwd}, #{profilePath})
 	</insert>
@@ -28,7 +28,7 @@
 		select
 		*
 		from
-		user
+		USER
 		where
 		email =
 		#{email} and pwd = #{pwd}
@@ -38,7 +38,7 @@
 		select
 		*
 		from
-		user
+		USER
 		where
 		email =
 		#{email}
@@ -51,7 +51,7 @@
 			, u.name
 			, ifnull(u.profile_img, '') profile_img
 			, ifnull(m.ROOM_ID, '') ROOM_ID
-		from friend f
+		from FRIEND f
 		join user u
 		on f.friend_id = u.id
 		and f.user_id = #{userId}
@@ -59,7 +59,7 @@
 			select
 				r.room_id
 				, m.ID
-			from c_room r
+			from C_ROOM r
 			join C_ROOM_MEMBER m
 				on r.room_id = m.ROOM_ID
 				and r.is_group = 'N'
