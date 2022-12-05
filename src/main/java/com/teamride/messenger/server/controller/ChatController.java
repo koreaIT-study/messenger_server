@@ -36,6 +36,11 @@ public class ChatController {
 		return chatService.mkRoom(room);
 	}
 	
+	@PostMapping("/find-room-by-id")
+	public ChatRoomDTO findRoomById(@RequestBody String roomId){
+		return chatService.findRoomById(roomId);
+	}
+	
 	@GetMapping("/get-room-list")
 	public List<ChatRoomDTO> getRoomList(String userId) {
 		List<ChatRoomDTO> result = chatService.getAllRoomWithUserId(userId);

@@ -24,6 +24,10 @@ public class ChatService {
 	public List<ChatRoomDTO> getAllRoomWithUserId(String userId) {
 		return chatMapper.getAllRoomWithUserId(userId);
 	}
+	
+	public ChatRoomDTO findRoomById(String roomId) {
+		return chatMapper.findRoomById(roomId);
+	}
 
 	@Transactional(rollbackFor = RuntimeException.class)
 	public ChatRoomDTO mkRoom(ChatRoomDTO room) {
@@ -36,6 +40,7 @@ public class ChatService {
             chatMapper.insertRoom(room2);
             chatMapper.insertRoomMember(room2);
         } catch (Exception e) {
+        	log.error("make room error :::: {}", e);
             throw new RuntimeException("UUID Duplicate");
         }
 

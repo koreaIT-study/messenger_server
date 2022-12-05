@@ -9,7 +9,29 @@
 		USER
 		u on u.id = m.writer where m.room_id=#{room_id}
 	</select>
-
+	
+	<select id="findRoomById" resultType="ChatRoomDTO">
+		SELECT msg.room_id
+		    , msg.message
+		    , msg.timestamp
+		    , room.room_name
+		    , mem.cnt
+		FROM (
+		    SELECT  room_id, message, timestamp 
+		    FROM C_MESSAGE
+		    WHERE room_id = #{roomId}
+		    ORDER BY timestamp DESC
+		    LIMIT 1) msg
+		JOIN C_ROOM room
+		    ON msg.room_id = room.room_id
+		JOIN (
+		    SELECT room_id, COUNT(id) AS cnt
+		    FROM C_ROOM_MEMBER
+		    GROUP BY room_id
+		    ) mem
+		    on msg.room_id = mem.room_id
+	</select>
+	
 	<insert id="insertRoom">
 		INSERT INTO C_ROOM(room_id, room_name, is_group)
 		VALUES (#{roomId}, #{roomName}, #{isGroup})
