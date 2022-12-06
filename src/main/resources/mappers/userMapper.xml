@@ -45,27 +45,30 @@
 	</select>
 
 	<select id="getFriendList" resultType="FriendInfoDTO">
-		select
-			f.friend_id
-			, u.email
-			, u.name
-			, ifnull(u.profile_path, '') profile_img
-			, ifnull(m.ROOM_ID, '') ROOM_ID
-		from FRIEND f
-		join USER u
-		on f.friend_id = u.id
-		and f.user_id = #{userId}
-		left join (
-			select
-				r.room_id
-				, m.ID
-			from C_ROOM r
-			join C_ROOM_MEMBER m
-				on r.room_id = m.ROOM_ID
-				and r.is_group = 'N'
-				and m.ID = #{userId}
-		) m
-		on u.id = m.ID
+		SELECT F.FRIEND_ID
+			, U.NAME
+			, U.EMAIL
+			, IFNULL(U.PROFILE_PATH, '') PROFILE_IMG
+			, IFNULL(ROOM.ROOM_ID, '') ROOM_ID
+		FROM FRIEND F
+		JOIN USER U
+		ON F.FRIEND_ID = U.ID
+		LEFT JOIN (
+			SELECT MEM.ROOM_ID
+				, CR.ROOM_NAME
+				, CR.IS_GROUP
+				, CRM.ID
+			FROM C_ROOM_MEMBER MEM
+			JOIN C_ROOM CR
+				ON MEM.ROOM_ID = CR.ROOM_ID
+			JOIN C_ROOM_MEMBER CRM
+				ON MEM.ROOM_ID = CRM.ROOM_ID
+			WHERE MEM.ID = #{userId}
+				AND CRM.ID <![CDATA[<>]]> #{userId}
+				AND CR.IS_GROUP = 'N'
+			) ROOM
+		ON U.ID = ROOM.ID
+		WHERE F.USER_ID = #{userId}
 	</select>
 
 	<select id="searchUser" resultType="UserDTO">
