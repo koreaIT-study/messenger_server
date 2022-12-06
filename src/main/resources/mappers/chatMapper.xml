@@ -46,7 +46,7 @@
 		JOIN (
 			SELECT
 				room_id
-				, MAX(timestamp) TIME
+				, MAX(timestamp) TIMESTAMP
 			FROM C_MESSAGE
 			GROUP BY room_id
 			) T
