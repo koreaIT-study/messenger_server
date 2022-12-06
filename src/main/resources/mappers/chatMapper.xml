@@ -41,7 +41,7 @@
 		SELECT
 			MSG.room_id
 			, MSG.message
-			, T.TIME
+			, T.timestamp
 		FROM C_MESSAGE MSG
 		JOIN (
 			SELECT
@@ -51,11 +51,11 @@
 			GROUP BY room_id
 			) T
 		ON MSG.ROOM_ID = T.ROOM_ID
-		AND MSG.TIMESTAMP = T.TIME
+		AND MSG.TIMESTAMP = T.timestamp
 		)
 		SELECT MSG.ROOM_ID
 			, MSG.MESSAGE
-			, MSG.TIME
+			, MSG.timestamp
 			, RNM.ROOM_NAME
 			, CNT.CNT
 		FROM MSG
