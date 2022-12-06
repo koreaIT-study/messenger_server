@@ -70,7 +70,8 @@
 
 	<select id="searchUser" resultType="UserDTO">
 		SELECT 
-			u.email 
+			u.id
+			, u.email 
 			, u.name 
 			, u.profile_path 
 		FROM 
