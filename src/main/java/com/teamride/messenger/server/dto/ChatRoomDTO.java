@@ -23,7 +23,7 @@ public class ChatRoomDTO {
     private String roomId; // pk
     private String roomName;
     private String message;
-    private String timeStamp;
+    private String timestamp;
     private int cnt;
     private String isGroup;
     private List<String> userId;

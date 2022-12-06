@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.stereotype.Service;
 
+import com.teamride.messenger.server.dto.FriendDTO;
 import com.teamride.messenger.server.dto.FriendInfoDTO;
 import com.teamride.messenger.server.dto.UserDTO;
 import com.teamride.messenger.server.mapper.UserMapper;
@@ -52,5 +53,13 @@ public class UserService {
 //            throw new NotFoundException("not found friends");
 //        }
         return result;
+    }
+
+    public List<UserDTO> searchUser(String searchKey) {
+        return userMapper.searchUser(searchKey);
+    }
+
+    public Integer addFriend(FriendDTO dto) {
+        return userMapper.addFriend(dto);
     }
 }

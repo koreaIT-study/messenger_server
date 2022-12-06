@@ -19,7 +19,7 @@
 
 	<insert id="saveUser">
 		INSERT INTO
-		`messenger`.`USER`(`email`,`name`,`pwd`,`profile_img`)
+		`messenger`.`USER`(`email`,`name`,`pwd`,`profile_path`)
 		VALUES
 		(#{email}, #{name}, #{pwd}, #{profilePath})
 	</insert>
@@ -70,4 +70,24 @@
 		ON U.ID = ROOM.ID
 		WHERE F.USER_ID = #{userId}
 	</select>
+
+	<select id="searchUser" resultType="UserDTO">
+		SELECT 
+			u.id
+			, u.email 
+			, u.name 
+			, u.profile_path 
+		FROM 
+			`USER` u
+		WHERE 
+			u.email = #{searchKey}
+			OR u.name = #{searchKey};
+	</select>
+
+	<insert id="addFriend">
+		INSERT INTO FRIEND
+			(user_id, friend_id)
+		VALUES
+			(#{userId}, #{friendId})
+	</insert>
 </mapper>
