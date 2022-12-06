@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.teamride.messenger.server.dto.FriendDTO;
 import com.teamride.messenger.server.dto.FriendInfoDTO;
 import com.teamride.messenger.server.dto.UserDTO;
 import com.teamride.messenger.server.service.UserService;
@@ -36,7 +37,7 @@ public class UserController {
         try {
             return adminService.getUserInfo(userDTO);
         } catch (NotFoundException e) {
-            return null; 
+            return null;
         }
     }
 
@@ -50,9 +51,9 @@ public class UserController {
     }
 
     @PostMapping("/signUp")
-    public Integer signUp(@RequestBody UserDTO userDTO) {
+    public Integer signUp(@RequestBody UserDTO dto) {
         try {
-            return adminService.saveUser(userDTO);
+            return adminService.saveUser(dto);
         } catch (Exception e) {
             return 0;
         }
@@ -64,7 +65,12 @@ public class UserController {
     }
 
     @GetMapping("/searchUser")
-    public List<UserDTO> searchUser(@RequestParam String searchKey){
+    public List<UserDTO> searchUser(@RequestParam String searchKey) {
         return adminService.searchUser(searchKey);
+    }
+
+    @PostMapping("/addFriend")
+    public Integer addFriend(@RequestBody FriendDTO dto) {
+        return adminService.addFriend(dto);
     }
 }
