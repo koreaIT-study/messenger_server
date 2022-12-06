@@ -10,14 +10,16 @@ import org.springframework.web.bind.annotation.RestController;
 import com.teamride.messenger.server.config.KafkaConstants;
 import com.teamride.messenger.server.dto.ChatMessageDTO;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @Slf4j
+@RequiredArgsConstructor
 public class KafkaController {
 	private static final String topicName = "chat-client";
 	private static final String chatServer = KafkaConstants.CHAT_SERVER;
-	private ChatService chatService;
+	private final ChatService chatService;
 
 	@Autowired
 	private KafkaTemplate<String, ChatMessageDTO> kafkaTemplate;
