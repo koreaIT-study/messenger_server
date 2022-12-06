@@ -67,4 +67,16 @@
 		) m
 		on u.id = m.ID
 	</select>
+
+	<select id="searchUser" resultType="UserDTO">
+		SELECT 
+			u.email 
+			, u.name 
+			, u.profile_path 
+		FROM 
+			`USER` u
+		WHERE 
+			u.email = #{searchKey}
+			OR u.name = #{searchKey};
+	</select>
 </mapper>
