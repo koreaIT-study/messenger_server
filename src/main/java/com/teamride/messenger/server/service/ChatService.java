@@ -47,4 +47,8 @@ public class ChatService {
 		return room2;
 	}
 
+	public void insertMessage(ChatMessageDTO message){
+		chatMapper.insertMessage(message);
+	}
+
 }

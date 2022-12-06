@@ -1,5 +1,6 @@
 package com.teamride.messenger.server.controller;
 
+import com.teamride.messenger.server.service.ChatService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -16,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 public class KafkaController {
 	private static final String topicName = "chat-client";
 	private static final String chatServer = KafkaConstants.CHAT_SERVER;
+	private ChatService chatService;
 
 	@Autowired
 	private KafkaTemplate<String, ChatMessageDTO> kafkaTemplate;
@@ -29,6 +31,7 @@ public class KafkaController {
 		// topic : user id
 
 		// message db저장
+        chatService.insertMessage(message);
 
 		kafkaTemplate.send(topicName, message);
 		ack.acknowledge();

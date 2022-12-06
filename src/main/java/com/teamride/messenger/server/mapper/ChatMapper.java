@@ -20,4 +20,6 @@ public interface ChatMapper {
 	public void insertRoom(ChatRoomDTO chatRoom);
 
 	public void insertRoomMember(ChatRoomDTO chatRoom);
+
+	public void insertMessage(ChatMessageDTO message);
 }

@@ -78,11 +78,16 @@
 		ON CNT.ROOM_ID = MSG.ROOM_ID
 	</select>
 
-	<insert id="insertRoomMember" parameterType="ChatMessageDTO">
+	<insert id="insertRoomMember" parameterType="ChatRoomDTO">
 		INSERT INTO C_ROOM_MEMBER(room_id, ID)
 		VALUES
 		<foreach collection="userId" item="id" separator=",">
 			(#{roomId}, #{id})
 		</foreach>
+	</insert>
+
+	<insert id="insertMessage">
+		INSERT INTO C_MESSAGE (ROOM_ID, WRITER, MESSAGE, TIMESTAMP)
+		VALUES (#{roomId}, #{writer}, #{message}, #{timestamp})
 	</insert>
 </mapper>
