@@ -1,7 +1,6 @@
 package com.teamride.messenger.server.service;
 
 import java.sql.SQLException;
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -28,7 +27,9 @@ public class ChatService {
 	}
 	
 	public ChatRoomDTO findRoomById(String roomId) {
-		return chatMapper.findRoomById(roomId);
+		ChatRoomDTO room = chatMapper.findRoomById(roomId);
+		room.setUserId(chatMapper.getRoomMember(roomId));
+		return room;
 	}
 
 	@Transactional

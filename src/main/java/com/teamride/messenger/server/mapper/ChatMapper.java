@@ -16,6 +16,8 @@ public interface ChatMapper {
 	// 해당 userId의 room 전체 조회
 	public List<ChatRoomDTO> getAllRoomWithUserId(String userId);
 
+	public List<String> getRoomMember(String userId);
+
 	public ChatRoomDTO findRoomById(String roomId);
 	
 	public void insertRoom(ChatRoomDTO chatRoom) throws SQLException;

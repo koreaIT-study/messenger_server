@@ -31,6 +31,12 @@
 		    ) mem
 		    on msg.room_id = mem.room_id
 	</select>
+
+	<select id="getRoomMember" resultType="String">
+		SELECT ID
+		FROM C_ROOM_MEMBER
+		WHERE ROOM_ID = #{roomId};
+	</select>
 	
 	<insert id="insertRoom">
 		INSERT INTO C_ROOM(room_id, room_name, is_group)
@@ -87,7 +93,10 @@
 	</insert>
 
 	<insert id="insertMessage">
+		<selectKey keyProperty="timestamp" order="BEFORE" resultType="string" >
+			SELECT current_timestamp(6) FROM DUAL
+		</selectKey>
 		INSERT INTO C_MESSAGE (ROOM_ID, WRITER, MESSAGE, TIMESTAMP)
-		VALUES (#{roomId}, #{writer}, #{message}, current_timestamp(6))
+		VALUES (#{roomId}, #{writer}, #{message}, #{timestamp})
 	</insert>
 </mapper>
