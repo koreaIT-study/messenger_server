@@ -1,5 +1,7 @@
 package com.teamride.messenger.server.service;
 
+import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -29,26 +31,38 @@ public class ChatService {
 		return chatMapper.findRoomById(roomId);
 	}
 
-	@Transactional(rollbackFor = RuntimeException.class)
+	@Transactional
 	public ChatRoomDTO mkRoom(ChatRoomDTO room) {
 		// uuid 만들고
 		// insert
 		ChatRoomDTO room2 = null;
-
-        try {
-            room2 = ChatRoomDTO.create(room);
-            chatMapper.insertRoom(room2);
-            chatMapper.insertRoomMember(room2);
-        } catch (Exception e) {
-        	log.error("make room error :::: {}", e);
-            throw new RuntimeException("UUID Duplicate");
-        }
+		int cnt = 0;
+		while(true){
+			try {
+				room2 = ChatRoomDTO.create(room);
+				chatMapper.insertRoom(room2);
+				chatMapper.insertRoomMember(room2);
+				break;
+			} catch(SQLException slqe){
+				log.error("UUID Duplicate :::::::");
+				if(cnt == 3) throw new RuntimeException("UUID Duplicate or {}", slqe);
+				cnt++;
+			} catch (Exception e) {
+				log.error("make room error :::: {}", e);
+				throw new RuntimeException("Another Exception {}", e);
+			}
+		}
 
 		return room2;
 	}
 
+	@Transactional
 	public void insertMessage(ChatMessageDTO message){
-		chatMapper.insertMessage(message);
+		try {
+			chatMapper.insertMessage(message);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 }

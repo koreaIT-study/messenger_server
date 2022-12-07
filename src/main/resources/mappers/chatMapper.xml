@@ -88,6 +88,6 @@
 
 	<insert id="insertMessage">
 		INSERT INTO C_MESSAGE (ROOM_ID, WRITER, MESSAGE, TIMESTAMP)
-		VALUES (#{roomId}, #{writer}, #{message}, #{timestamp})
+		VALUES (#{roomId}, #{writer}, #{message}, current_timestamp(6))
 	</insert>
 </mapper>
