@@ -10,6 +10,17 @@
 		u on u.id = m.writer where m.room_id=#{room_id}
 	</select>
 	
+	<!-- message가 없어도 해당 room만 return -->
+	<select id="getRoom" resultType="ChatRoomDTO">
+		 SELECT * FROM C_ROOM CR JOIN
+             (SELECT room_id, COUNT(id) AS cnt
+		    FROM C_ROOM_MEMBER 
+		    GROUP BY room_id) CRM
+            ON CR.room_id = CRM.room_id
+			where CR.room_id=#{roomId}
+	</select>
+	
+	<!-- room을 찾고, 해당 room에 user가 누가 있는지 찾아주는 쿼리(무조건 message가 있어야 함) -->
 	<select id="findRoomById" resultType="ChatRoomDTO">
 		SELECT msg.room_id
 		    , msg.message

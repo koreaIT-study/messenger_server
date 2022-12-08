@@ -26,6 +26,12 @@ public class ChatService {
 		return chatMapper.getAllRoomWithUserId(userId);
 	}
 	
+	public ChatRoomDTO getRoom(String roomId) {
+		ChatRoomDTO room = chatMapper.getRoom(roomId);
+		log.info("chatRoom:::"+room);
+		return room;
+	}
+	
 	public ChatRoomDTO findRoomById(String roomId) {
 		ChatRoomDTO room = chatMapper.findRoomById(roomId);
 		room.setUserId(chatMapper.getRoomMember(roomId));

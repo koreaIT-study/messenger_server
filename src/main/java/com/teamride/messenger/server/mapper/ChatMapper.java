@@ -18,6 +18,8 @@ public interface ChatMapper {
 
 	public List<String> getRoomMember(String userId);
 
+	public ChatRoomDTO getRoom(String roomId);
+
 	public ChatRoomDTO findRoomById(String roomId);
 	
 	public void insertRoom(ChatRoomDTO chatRoom) throws SQLException;
