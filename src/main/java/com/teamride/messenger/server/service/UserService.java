@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.teamride.messenger.server.dto.FriendDTO;
 import com.teamride.messenger.server.dto.FriendInfoDTO;
 import com.teamride.messenger.server.dto.UserDTO;
@@ -38,14 +39,13 @@ public class UserService {
         return userInfo;
     }
 
-    public int saveUser(UserDTO userDTO) throws Exception {
-        userDTO.getProfilePath();
-
-        final int result = userMapper.saveUser(userDTO);
-        if (result == 0) {
-            throw new Exception("not saved user");
+    public int saveUser(UserDTO dto) throws Exception {
+        try {
+            return userMapper.saveUser(dto);
+        } catch (Exception e) {
+            log.error("sigh up error", e);
+            return 0;
         }
-        return result;
     }
 
     public List<FriendInfoDTO> getFriendList(int userId) throws NotFoundException {

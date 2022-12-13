@@ -13,4 +13,6 @@ public class UserDTO {
 	private String name;
 	private String pwd;
 	private String profilePath; // 나중에
+	private String profileImg;
+	private String profileOriginalImg;
 }
