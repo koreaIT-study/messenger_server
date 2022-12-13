@@ -18,10 +18,10 @@
 	</select>
 
 	<insert id="saveUser">
-		INSERT INTO
-		`messenger`.`USER`(`email`,`name`,`pwd`,`profile_path`)
+		INSERT INTO messenger.`USER`
+		(email, name, pwd, profile_path, profile_img, profile_original_img)
 		VALUES
-		(#{email}, #{name}, #{pwd}, #{profilePath})
+		(#{email}, #{name}, #{pwd}, #{profilePath}, #{profileImg}, #{profileOriginalImg})
 	</insert>
 
 	<select id="getUserInfo" resultType="UserDTO">
@@ -77,6 +77,7 @@
 			, u.email 
 			, u.name 
 			, u.profile_path 
+			, profile_img
 		FROM 
 			`USER` u
 		WHERE 
