@@ -65,8 +65,8 @@ public class UserController {
     }
 
     @GetMapping("/searchUser")
-    public List<UserDTO> searchUser(@RequestParam String searchKey) {
-        return adminService.searchUser(searchKey);
+    public List<UserDTO> searchUser(@RequestParam String searchKey, @RequestParam int userId) {
+        return adminService.searchUser(searchKey, userId);
     }
 
     @PostMapping("/addFriend")

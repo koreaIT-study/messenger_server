@@ -1,6 +1,7 @@
 package com.teamride.messenger.server.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.stereotype.Service;
@@ -22,7 +23,7 @@ public class UserService {
     public UserDTO checkAndInsertUser(UserDTO userDTO) {
         if (userMapper.checkExistUser(userDTO.getEmail()) == 0) {
             // 처음 회원가입
-        	userMapper.saveUser(userDTO);
+            userMapper.saveUser(userDTO);
             log.info(userDTO.getName() + " 회원가입 완료");
         }
         log.info(userDTO.getName() + " 가입된 유저");
@@ -49,14 +50,17 @@ public class UserService {
 
     public List<FriendInfoDTO> getFriendList(int userId) throws NotFoundException {
         List<FriendInfoDTO> result = userMapper.getFriendList(userId);
-//        if (result.isEmpty()) {
-//            throw new NotFoundException("not found friends");
-//        }
+        // if (result.isEmpty()) {
+        // throw new NotFoundException("not found friends");
+        // }
         return result;
     }
 
-    public List<UserDTO> searchUser(String searchKey) {
-        return userMapper.searchUser(searchKey);
+    public List<UserDTO> searchUser(String searchKey, int userId) {
+        final List<UserDTO> searchList = userMapper.searchUser(searchKey);
+        return searchList.stream()
+                .filter(v -> v.getId() != userId)
+                .collect(Collectors.toList());
     }
 
     public Integer addFriend(FriendDTO dto) {
