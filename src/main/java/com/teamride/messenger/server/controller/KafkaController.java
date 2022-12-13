@@ -17,14 +17,12 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RequiredArgsConstructor
 public class KafkaController {
-	private static final String topicName = "chat-client";
-	private static final String chatServer = KafkaConstants.CHAT_SERVER;
 	private final ChatService chatService;
 
 	@Autowired
 	private KafkaTemplate<String, ChatMessageDTO> kafkaTemplate;
 
-	@KafkaListener(topics = chatServer, groupId = KafkaConstants.GROUP_ID)
+	@KafkaListener(topics = KafkaConstants.CHAT_SERVER, groupId = KafkaConstants.GROUP_ID)
 	public void listen(ChatMessageDTO message, Acknowledgment ack) {
 		log.info("Received Msg chatServer " + message);
 		// client에서 message받음
@@ -33,9 +31,9 @@ public class KafkaController {
 		// topic : user id
 
 		// message db저장
-        chatService.insertMessage(message);
+		chatService.insertMessage(message);
 
-		kafkaTemplate.send(topicName, message);
+		kafkaTemplate.send(KafkaConstants.CHAT_CLIENT, message);
 		ack.acknowledge();
 	}
 

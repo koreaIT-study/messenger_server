@@ -41,6 +41,8 @@ dependencies {
 	// https://mvnrepository.com/artifact/org.springframework/spring-context-support
 	implementation 'org.springframework:spring-context-support:5.3.23'
 	
+	// M1 Mac에서 발생하는 오류 해결
+	implementation 'io.netty:netty-resolver-dns-native-macos:4.1.68.Final:osx-aarch_64'
 }
 
 tasks.named('test') {
