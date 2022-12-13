@@ -14,12 +14,26 @@
 	<select id="getRoom" resultType="ChatRoomDTO">
 		 SELECT * FROM C_ROOM CR JOIN
              (SELECT room_id, COUNT(id) AS cnt
-		    FROM C_ROOM_MEMBER 
+		    FROM C_ROOM_MEMBER
 		    GROUP BY room_id) CRM
             ON CR.room_id = CRM.room_id
 			where CR.room_id=#{roomId}
 	</select>
-	
+
+	<select id="getOneByOneRoom" resultType="ChatRoomDTO">
+		SELECT CR.ROOM_ID
+			 , CR.ROOM_NAME
+			 , CR.IS_GROUP
+		FROM C_ROOM CR
+		JOIN C_ROOM_MEMBER CRM1
+		  ON CR.ROOM_ID = CRM1.ROOM_ID
+		JOIN C_ROOM_MEMBER CRM2
+		  ON CRM1.ROOM_ID = CRM2.ROOM_ID
+		WHERE CR.IS_GROUP = 'N'
+		  AND CRM1.ID = #{myId}
+		  AND CRM2.ID = #{friendId}
+	</select>
+
 	<!-- room을 찾고, 해당 room에 user가 누가 있는지 찾아주는 쿼리(무조건 message가 있어야 함) -->
 	<select id="findRoomById" resultType="ChatRoomDTO">
 		SELECT msg.room_id
@@ -53,6 +67,7 @@
 		INSERT INTO C_ROOM(room_id, room_name, is_group)
 		VALUES (#{roomId}, #{roomName}, #{isGroup})
 	</insert>
+
 	<select id="getAllRoomWithUserId" resultType="ChatRoomDTO">
 		WITH MSG AS (
 		SELECT
@@ -79,11 +94,12 @@
 		JOIN (
 		      SELECT
 		        CRM.ROOM_ID
-		       , R.room_name
+				, MAX(R.ROOM_NAME) ROOM_NAME
 		      FROM C_ROOM R
 		      JOIN C_ROOM_MEMBER CRM
 		          ON R.ROOM_ID = CRM.ROOM_ID
 		          AND CRM.ID = #{userId} <!-- 파라미터부분 -->
+			  GROUP BY R.ROOM_ID
 		) RNM
 		ON MSG.ROOM_ID = RNM.ROOM_ID
 		JOIN (
@@ -93,6 +109,7 @@
 			GROUP BY ROOM_ID
 		) CNT
 		ON CNT.ROOM_ID = MSG.ROOM_ID
+		ORDER BY timestamp DESC
 	</select>
 
 	<insert id="insertRoomMember" parameterType="ChatRoomDTO">

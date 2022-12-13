@@ -2,6 +2,7 @@ package com.teamride.messenger.server.mapper;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -27,4 +28,6 @@ public interface ChatMapper {
 	public void insertRoomMember(ChatRoomDTO chatRoom) throws SQLException;
 
 	public void insertMessage(ChatMessageDTO message) throws SQLException;
+
+	public ChatRoomDTO getOneByOneRoom (Map map);
 }

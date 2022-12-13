@@ -1,6 +1,7 @@
 package com.teamride.messenger.server.service;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -43,6 +44,16 @@ public class ChatService {
 		// uuid 만들고
 		// insert
 		ChatRoomDTO room2 = null;
+
+		if(room.getIsGroup().equals("N")){
+			HashMap<String, String> map  = new HashMap<>();
+			List<String> userId = room.getUserId();
+			map.put("friendId",userId.get(0));
+			map.put("myId",userId.get(1));
+			room2 = chatMapper.getOneByOneRoom(map);
+			if(room2 != null) return room2;
+		}
+
 		int cnt = 0;
 		while(true){
 			try {
