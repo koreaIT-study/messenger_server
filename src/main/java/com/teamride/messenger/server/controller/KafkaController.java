@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.Acknowledgment;
+import org.springframework.kafka.support.SendResult;
+import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.teamride.messenger.server.config.KafkaConstants;
@@ -33,7 +35,13 @@ public class KafkaController {
 		// message db저장
 		chatService.insertMessage(message);
 
-		kafkaTemplate.send(KafkaConstants.CHAT_CLIENT, message);
+		ListenableFuture<SendResult<String, ChatMessageDTO>> future=kafkaTemplate.send(KafkaConstants.CHAT_CLIENT, "message", message);
+		
+		future.addCallback((result)->{
+		    log.info("message 전송 성공, message :: {}, result is :: {}", message, result);
+		}, (ex)->{
+		    log.error("message 전송 실패, message :: {}, error is :: {}", message, ex);
+		});
 		ack.acknowledge();
 	}
 
