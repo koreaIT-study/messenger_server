@@ -1,6 +1,13 @@
 package com.teamride.messenger.server.controller;
 
 import com.teamride.messenger.server.service.ChatService;
+
+import java.util.PriorityQueue;
+import java.util.Queue;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.atomic.AtomicLong;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -33,16 +40,24 @@ public class KafkaController {
 		// topic : user id
 
 		// message db저장
+		
 		chatService.insertMessage(message);
 
-		ListenableFuture<SendResult<String, ChatMessageDTO>> future=kafkaTemplate.send(KafkaConstants.CHAT_CLIENT, "message", message);
-		
-		future.addCallback((result)->{
-		    log.info("message 전송 성공, message :: {}, result is :: {}", message, result);
-		}, (ex)->{
-		    log.error("message 전송 실패, message :: {}, error is :: {}", message, ex);
+//		int partitionKey = message.getRoomId().charAt(0) % 3;
+		 String partitionKey = String.valueOf(message.getRoomId()
+		            .charAt(0) % 3);
+		 
+		ListenableFuture<SendResult<String, ChatMessageDTO>> future = kafkaTemplate.send(KafkaConstants.CHAT_CLIENT,
+				partitionKey, message);
+
+		future.addCallback((result) -> {
+			log.info("message 전송 성공, message :: {}, result is :: {}", message, result);
+		}, (ex) -> {
+			log.error("message 전송 실패, message :: {}, error is :: {}", message, ex);
 		});
 		ack.acknowledge();
+
 	}
+
 
 }
