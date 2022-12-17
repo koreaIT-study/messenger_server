@@ -40,24 +40,24 @@ public class KafkaController {
 		// topic : user id
 
 		// message db저장
-		
-		chatService.insertMessage(message);
-
-//		int partitionKey = message.getRoomId().charAt(0) % 3;
-		 String partitionKey = String.valueOf(message.getRoomId()
-		            .charAt(0) % 3);
-		 
-		ListenableFuture<SendResult<String, ChatMessageDTO>> future = kafkaTemplate.send(KafkaConstants.CHAT_CLIENT,
-				partitionKey, message);
-
-		future.addCallback((result) -> {
-			log.info("message 전송 성공, message :: {}, result is :: {}", message, result);
-		}, (ex) -> {
-			log.error("message 전송 실패, message :: {}, error is :: {}", message, ex);
-		});
-		ack.acknowledge();
-
+		asyncInsertMessage(message, ack);
 	}
 
+	public void asyncInsertMessage(ChatMessageDTO message, Acknowledgment ack) {
+		CompletableFuture.runAsync(() -> {
+			chatService.insertMessage(message);
+
+			String partitionKey = String.valueOf(message.getRoomId().charAt(0) % 3);
+			ListenableFuture<SendResult<String, ChatMessageDTO>> future = kafkaTemplate.send(KafkaConstants.CHAT_CLIENT,
+					partitionKey, message);
+
+			future.addCallback((result) -> {
+				log.info("message 전송 성공, message :: {}, result is :: {}", message, result);
+			}, (ex) -> {
+				log.error("message 전송 실패, message :: {}, error is :: {}", message, ex);
+			});
+			ack.acknowledge();
+		});
+	}
 
 }
