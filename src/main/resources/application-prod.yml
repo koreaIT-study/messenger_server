@@ -7,14 +7,14 @@ spring:
       suffix: .html
   thymeleaf:
     prefix: classpath:/templates
+  servlet:
+    multiPart:
+      max-file-size: 10MB
   datasource:
     url: jdbc:mariadb://35.216.1.250:3306/messenger?characterEncoding=UTF-8&serverTimezone=UTC
     driver-class-name: org.mariadb.jdbc.Driver
     username: teamride
     password: 1234
-  servlet:
-    multiPart:
-      max-file-size: 10MB
   
 #mybatis:
 #  mapper-locations:

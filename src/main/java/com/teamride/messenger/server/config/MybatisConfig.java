@@ -1,5 +1,6 @@
 package com.teamride.messenger.server.config;
 
+import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -7,6 +8,8 @@ import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
@@ -19,7 +22,34 @@ import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 		sqlSessionFactoryRef = "sqlSessionFactory", // sqlSessionFactory이름으로 등록된 Bean을 찾아 sqlSessionFactory로 사용
 		sqlSessionTemplateRef="sqlSessionTemplate")
 public class MybatisConfig {
-
+	
+	@Value("${spring.datasource.url}")
+	public String url;
+	
+	@Value("${spring.datasource.driver-class-name}")
+	public String dirverClassName;
+	
+	@Value("${spring.datasource.username}")
+	public String username;	
+	
+	@Value("${spring.datasource.password}")
+	public String password;	
+	
+	@PostConstruct
+	public void init() {
+		System.out.println("dd");
+	}
+	
+	@Bean
+	public DataSource dataSource() {
+		DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
+        dataSourceBuilder.driverClassName(dirverClassName);
+        dataSourceBuilder.url(url);
+        dataSourceBuilder.username(username);
+        dataSourceBuilder.password(password);
+        return dataSourceBuilder.build();
+	}
+	
 	@Bean(name = "sqlSessionFactory") // sqlSessionFactory라는 이름으로 Bean등록
 	public SqlSessionFactory sqlSessionFactory(@Qualifier("dataSource") DataSource dataSource) throws Exception {
 
