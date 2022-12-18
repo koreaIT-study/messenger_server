@@ -8,10 +8,10 @@ spring:
   thymeleaf:
     prefix: classpath:/templates
   datasource:
-    url: jdbc:mysql://35.216.1.250:3306/messenger?characterEncoding=UTF-8&serverTimezone=UTC
-    username: root
+    url: jdbc:mariadb://35.216.1.250:3306/messenger?characterEncoding=UTF-8&serverTimezone=UTC
+    driver-class-name: org.mariadb.jdbc.Driver
+    username: teamride
     password: 1234
-    driver-class-name: com.mysql.cj.jdbc.Driver
   servlet:
     multiPart:
       max-file-size: 10MB

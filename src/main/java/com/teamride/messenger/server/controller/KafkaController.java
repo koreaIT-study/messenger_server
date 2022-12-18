@@ -47,7 +47,7 @@ public class KafkaController {
 		CompletableFuture.runAsync(() -> {
 			chatService.insertMessage(message);
 
-			String partitionKey = String.valueOf(message.getRoomId().charAt(0) % 3);
+			String partitionKey = message.getRoomId().substring(0, 2);
 			ListenableFuture<SendResult<String, ChatMessageDTO>> future = kafkaTemplate.send(KafkaConstants.CHAT_CLIENT,
 					partitionKey, message);
 

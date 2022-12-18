@@ -30,8 +30,13 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.kafka:spring-kafka-test'
     //implementation ('org.springframework.boot:spring-boot-starter-data-mongodb')
+	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
+
 	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.2.0'
-	runtimeOnly 'mysql:mysql-connector-java:8.0.25'
+	
+	implementation 'org.springframework.boot:spring-boot-starter-data-r2dbc'
+	runtimeOnly 'io.r2dbc:r2dbc-h2'
+	
 	
 	implementation("org.springframework.kafka:spring-kafka")
 	testImplementation("org.springframework.kafka:spring-kafka-test")
