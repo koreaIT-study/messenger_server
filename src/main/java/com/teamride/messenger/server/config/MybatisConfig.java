@@ -35,11 +35,6 @@ public class MybatisConfig {
 	@Value("${spring.datasource.password}")
 	public String password;	
 	
-	@PostConstruct
-	public void init() {
-		System.out.println("dd");
-	}
-	
 	@Bean
 	public DataSource dataSource() {
 		DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();

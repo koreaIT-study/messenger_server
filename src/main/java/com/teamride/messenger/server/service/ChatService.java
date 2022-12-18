@@ -39,7 +39,6 @@ public class ChatService {
 		return room;
 	}
 
-	@Transactional
 	public ChatRoomDTO mkRoom(ChatRoomDTO room) {
 		// uuid 만들고
 		// insert
@@ -74,7 +73,7 @@ public class ChatService {
 		return room2;
 	}
 
-	@Transactional
+	@Transactional(value = "transactionManager")
 	public void insertMessage(ChatMessageDTO message){
 		try {
 			chatMapper.insertMessage(message);
