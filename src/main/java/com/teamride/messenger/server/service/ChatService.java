@@ -4,17 +4,19 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 
-import com.teamride.messenger.server.repository.ChatMessageRepo;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.teamride.messenger.server.dto.ChatMessageDTO;
 import com.teamride.messenger.server.dto.ChatRoomDTO;
+import com.teamride.messenger.server.entity.ChatMessage;
 import com.teamride.messenger.server.mapper.ChatMapper;
+import com.teamride.messenger.server.repository.ChatMessageRepo;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 @Slf4j
 @Service
@@ -80,10 +82,11 @@ public class ChatService {
 	}
 
 	@Transactional(value = "transactionManager")
-	public void insertMessage(ChatMessageDTO message){
+	public Mono<ChatMessage> insertMessage(ChatMessageDTO message){
 		//			chatMapper.insertMessage(message);
 		message.setTimestamp();
-		chatMessageRepo.save(message);
+		ChatMessage chatMessage = new ChatMessage(message);
+		return chatMessageRepo.save(chatMessage);
 	}
 
 }

@@ -7,6 +7,6 @@ spring:
     username: teamride
     password: 1234
 
-  logging:
-    level:
-      org.springframework.r2dbc.core: debug
+logging:
+  level:
+    org.springframework.r2dbc.core: debug

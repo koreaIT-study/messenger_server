@@ -1,12 +1,14 @@
 package com.teamride.messenger.server.repository;
 
 import com.teamride.messenger.server.dto.ChatMessageDTO;
+import com.teamride.messenger.server.entity.ChatMessage;
+
 import org.apache.ibatis.annotations.Param;
 import org.springframework.data.r2dbc.repository.Query;
 import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 import reactor.core.publisher.Flux;
 
-public interface ChatMessageRepo extends ReactiveCrudRepository<ChatMessageDTO, Void> {
+public interface ChatMessageRepo extends ReactiveCrudRepository<ChatMessage, Void> {
 
     @Query("SELECT ROOM_ID, WRITER, MESSAGE,TIMESTAMP, NAME AS WRITER_NAME " +
             "FROM C_MESSAGE M " +

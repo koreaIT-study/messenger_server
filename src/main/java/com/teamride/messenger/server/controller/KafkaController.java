@@ -1,12 +1,6 @@
 package com.teamride.messenger.server.controller;
 
-import com.teamride.messenger.server.service.ChatService;
-
-import java.util.PriorityQueue;
-import java.util.Queue;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.atomic.AtomicLong;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -18,9 +12,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.teamride.messenger.server.config.KafkaConstants;
 import com.teamride.messenger.server.dto.ChatMessageDTO;
+import com.teamride.messenger.server.entity.ChatMessage;
+import com.teamride.messenger.server.service.ChatService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import reactor.core.publisher.Mono;
 
 @RestController
 @Slf4j
@@ -41,12 +38,14 @@ public class KafkaController {
 
 		// message db저장
 		asyncInsertMessage(message, ack);
+
 	}
 
 	public void asyncInsertMessage(ChatMessageDTO message, Acknowledgment ack) {
 		CompletableFuture.runAsync(() -> {
-			chatService.insertMessage(message);
-
+			Mono<ChatMessage> monoChatMessage = chatService.insertMessage(message);
+			monoChatMessage.subscribe();
+			
 			String partitionKey = message.getRoomId().substring(0, 2);
 			ListenableFuture<SendResult<String, ChatMessageDTO>> future = kafkaTemplate.send(KafkaConstants.CHAT_CLIENT,
 					partitionKey, message);
