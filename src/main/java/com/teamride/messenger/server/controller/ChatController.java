@@ -13,6 +13,7 @@ import com.teamride.messenger.server.service.ChatService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import reactor.core.publisher.Flux;
 
 @Slf4j
 @RestController
@@ -22,9 +23,11 @@ public class ChatController {
 	private final ChatService chatService;
 
 	@GetMapping("/get-chat-message")
-	public List<ChatMessageDTO> getChatMessage(String roomId) {
-		List<ChatMessageDTO> result = chatService.getAllMessageWithRoomId(roomId);
-		
+//	public List<ChatMessageDTO> getChatMessage(String roomId) {
+	public Flux<ChatMessageDTO> getChatMessage(String roomId) {
+//		List<ChatMessageDTO> result = chatService.getAllMessageWithRoomId(roomId);
+		Flux<ChatMessageDTO> result = chatService.getAllMessageWithRoomId(roomId);
+
 		log.info("get chat message api");
 		log.info("roomId is {}, result :: {} ", roomId, result);
 		return result;

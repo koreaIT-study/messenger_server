@@ -1,5 +1,6 @@
 package com.teamride.messenger.server.dto;
 
+import java.text.SimpleDateFormat;
 import java.util.concurrent.atomic.AtomicLong;
 
 import lombok.AllArgsConstructor;
@@ -17,4 +18,8 @@ public class ChatMessageDTO{
 	private String message;
 	private String timestamp;
 	private String writerName;
+
+	public void setTimestamp(){
+		this.timestamp = new SimpleDateFormat("YYYY-MM-DD HH:mm:ss.SSS").format(System.currentTimeMillis());
+	}
 }

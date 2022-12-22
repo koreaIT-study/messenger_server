@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 
+import com.teamride.messenger.server.repository.ChatMessageRepo;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,6 +14,7 @@ import com.teamride.messenger.server.mapper.ChatMapper;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import reactor.core.publisher.Flux;
 
 @Slf4j
 @Service
@@ -20,8 +22,12 @@ import lombok.extern.slf4j.Slf4j;
 public class ChatService {
 	private final ChatMapper chatMapper;
 
-	public List<ChatMessageDTO> getAllMessageWithRoomId(String roomId) {
-		return chatMapper.getAllMessageWithRoomId(roomId);
+	private final ChatMessageRepo chatMessageRepo;
+
+//	public List<ChatMessageDTO> getAllMessageWithRoomId(String roomId) {
+	public Flux<ChatMessageDTO> getAllMessageWithRoomId(String roomId) {
+//		return chatMapper.getAllMessageWithRoomId(roomId);
+		return chatMessageRepo.getAllMessage(roomId);
 	}
 	public List<ChatRoomDTO> getAllRoomWithUserId(String userId) {
 		return chatMapper.getAllRoomWithUserId(userId);
@@ -75,11 +81,9 @@ public class ChatService {
 
 	@Transactional(value = "transactionManager")
 	public void insertMessage(ChatMessageDTO message){
-		try {
-			chatMapper.insertMessage(message);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		//			chatMapper.insertMessage(message);
+		message.setTimestamp();
+		chatMessageRepo.save(message);
 	}
 
 }

@@ -35,7 +35,8 @@ dependencies {
 	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.2.0'
 	
 	implementation 'org.springframework.boot:spring-boot-starter-data-r2dbc'
-	runtimeOnly 'io.r2dbc:r2dbc-h2'
+	runtimeOnly 'org.mariadb:r2dbc-mariadb'
+//	runtimeOnly 'io.r2dbc:r2dbc-h2'
 	
 	
 	implementation("org.springframework.kafka:spring-kafka")
