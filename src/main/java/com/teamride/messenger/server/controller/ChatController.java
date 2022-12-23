@@ -1,7 +1,5 @@
 package com.teamride.messenger.server.controller;
 
-import java.util.List;
-
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,6 +12,7 @@ import com.teamride.messenger.server.service.ChatService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 @Slf4j
 @RestController
@@ -23,34 +22,27 @@ public class ChatController {
 	private final ChatService chatService;
 
 	@GetMapping("/get-chat-message")
-//	public List<ChatMessageDTO> getChatMessage(String roomId) {
 	public Flux<ChatMessageDTO> getChatMessage(String roomId) {
-//		List<ChatMessageDTO> result = chatService.getAllMessageWithRoomId(roomId);
-		Flux<ChatMessageDTO> result = chatService.getAllMessageWithRoomId(roomId);
-
-		log.info("get chat message api");
-		log.info("roomId is {}, result :: {} ", roomId, result);
-		return result;
+		return chatService.getAllMessageWithRoomId(roomId);
 	}
 
 	@PostMapping("/room")
-	public ChatRoomDTO mkRoom(@RequestBody ChatRoomDTO room){
+	public Mono<ChatRoomDTO> mkRoom(@RequestBody ChatRoomDTO room) {
 		return chatService.mkRoom(room);
 	}
-	
+
 	@PostMapping("/get-room")
-	public ChatRoomDTO getRoom(@RequestBody String roomId){
+	public Mono<ChatRoomDTO> getRoom(@RequestBody String roomId) {
 		return chatService.getRoom(roomId);
 	}
-	
+
 	@PostMapping("/find-room-by-id")
-	public ChatRoomDTO findRoomById(@RequestBody String roomId){
+	public Mono<ChatRoomDTO> findRoomById(@RequestBody String roomId) {
 		return chatService.findRoomById(roomId);
 	}
-	
+
 	@GetMapping("/get-room-list")
-	public List<ChatRoomDTO> getRoomList(String userId) {
-		List<ChatRoomDTO> result = chatService.getAllRoomWithUserId(userId);
-		return result;
+	public Flux<ChatRoomDTO> getRoomList(String userId) {
+		return chatService.getAllRoomWithUserId(userId);
 	}
 }

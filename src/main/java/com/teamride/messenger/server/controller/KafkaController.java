@@ -43,9 +43,10 @@ public class KafkaController {
 
 	public void asyncInsertMessage(ChatMessageDTO message, Acknowledgment ack) {
 		CompletableFuture.runAsync(() -> {
+			log.info("메시지 저장 메서드");
 			Mono<ChatMessage> monoChatMessage = chatService.insertMessage(message);
-			monoChatMessage.subscribe();
-			
+			monoChatMessage.subscribe(s -> log.info("저장~~~~" + s));
+
 			String partitionKey = message.getRoomId().substring(0, 2);
 			ListenableFuture<SendResult<String, ChatMessageDTO>> future = kafkaTemplate.send(KafkaConstants.CHAT_CLIENT,
 					partitionKey, message);
