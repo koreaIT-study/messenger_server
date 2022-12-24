@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.mail.MessagingException;
 
+import com.teamride.messenger.server.entity.FriendEntity;
 import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,6 +19,7 @@ import com.teamride.messenger.server.service.UserService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @RestController
@@ -57,17 +59,17 @@ public class UserController {
 	}
 
 	@GetMapping("/getFriends")
-	public List<FriendInfoDTO> getFriends(int userId) throws NotFoundException {
+	public Flux<FriendInfoDTO> getFriends(int userId) throws NotFoundException {
 		return adminService.getFriendList(userId);
 	}
 
 	@GetMapping("/searchUser")
-	public List<UserDTO> searchUser(@RequestParam String searchKey, @RequestParam int userId) {
+	public Flux<UserDTO> searchUser(@RequestParam String searchKey, @RequestParam int userId) {
 		return adminService.searchUser(searchKey, userId);
 	}
 
 	@PostMapping("/addFriend")
-	public Integer addFriend(@RequestBody FriendDTO dto) {
+	public Mono<FriendEntity> addFriend(@RequestBody FriendDTO dto) {
 		return adminService.addFriend(dto);
 	}
 }

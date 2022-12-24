@@ -1,8 +1,7 @@
 package com.teamride.messenger.server.service;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
+import com.teamride.messenger.server.entity.FriendEntity;
+import com.teamride.messenger.server.repository.FriendRepository;
 import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -10,19 +9,19 @@ import com.teamride.messenger.server.dto.FriendDTO;
 import com.teamride.messenger.server.dto.FriendInfoDTO;
 import com.teamride.messenger.server.dto.UserDTO;
 import com.teamride.messenger.server.entity.UserEntity;
-import com.teamride.messenger.server.mapper.UserMapper;
 import com.teamride.messenger.server.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserService {
-	private final UserMapper userMapper;
 	private final UserRepository userRepository;
+	private final FriendRepository friendRepository;
 
 	public Mono<UserDTO> checkAndInsertUser(UserDTO userDTO) {
 		UserEntity userEntity = new UserEntity(userDTO);
@@ -48,27 +47,24 @@ public class UserService {
 
 	public int saveUser(UserDTO dto) throws Exception {
 		try {
-			return userMapper.saveUser(dto);
+			UserEntity entity = new UserEntity(dto);
+			userRepository.save(entity).subscribe();
+			return 1;
 		} catch (Exception e) {
 			log.error("sigh up error", e);
 			return 0;
 		}
 	}
 
-	public List<FriendInfoDTO> getFriendList(int userId) throws NotFoundException {
-		List<FriendInfoDTO> result = userMapper.getFriendList(userId);
-		// if (result.isEmpty()) {
-		// throw new NotFoundException("not found friends");
-		// }
-		return result;
+	public Flux<FriendInfoDTO> getFriendList(int userId) throws NotFoundException {
+		return userRepository.findFriendsByUserid(userId);
 	}
 
-	public List<UserDTO> searchUser(String searchKey, int userId) {
-		final List<UserDTO> searchList = userMapper.searchUser(searchKey);
-		return searchList.stream().filter(v -> v.getId() != userId).collect(Collectors.toList());
+	public Flux<UserDTO> searchUser(String searchKey, int userId) {
+		return userRepository.findUserBySearchKey(searchKey).filter(el -> el.getId() != userId);
 	}
 
-	public Integer addFriend(FriendDTO dto) {
-		return userMapper.addFriend(dto);
+	public Mono<FriendEntity> addFriend(FriendDTO dto) {
+		return friendRepository.saveFriendEntity(dto);
 	}
 }

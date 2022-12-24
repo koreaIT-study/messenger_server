@@ -26,7 +26,7 @@ public interface ChatMessageRepository extends ReactiveCrudRepository<ChatMessag
             "FROM C_MESSAGE M " +
             "JOIN USER U" +
             "   ON U.ID = M.WRITER " +
-            "WHERE M.ROOM_ID = :#{param.roomId} " +
+            "WHERE M.ROOM_ID = :#{#param.roomId} " +
             "AND TIMESTAMP < :#{#param.timestamp} " +
             "ORDER BY TIMESTAMP DESC " +
             "LIMIT 100")
