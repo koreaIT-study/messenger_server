@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.teamride.messenger.server.config.KafkaConstants;
 import com.teamride.messenger.server.dto.ChatMessageDTO;
-import com.teamride.messenger.server.entity.ChatMessage;
+import com.teamride.messenger.server.entity.ChatMessageEntity;
 import com.teamride.messenger.server.service.ChatService;
 
 import lombok.RequiredArgsConstructor;
@@ -44,7 +44,7 @@ public class KafkaController {
 	public void asyncInsertMessage(ChatMessageDTO message, Acknowledgment ack) {
 		CompletableFuture.runAsync(() -> {
 			log.info("메시지 저장 메서드");
-			Mono<ChatMessage> monoChatMessage = chatService.insertMessage(message);
+			Mono<ChatMessageEntity> monoChatMessage = chatService.insertMessage(message);
 			monoChatMessage.subscribe(s -> log.info("저장~~~~" + s));
 
 			String partitionKey = message.getRoomId().substring(0, 2);

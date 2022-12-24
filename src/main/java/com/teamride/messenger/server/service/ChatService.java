@@ -9,9 +9,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.teamride.messenger.server.dto.ChatMessageDTO;
 import com.teamride.messenger.server.dto.ChatRoomDTO;
-import com.teamride.messenger.server.entity.ChatMessage;
+import com.teamride.messenger.server.entity.ChatMessageEntity;
 import com.teamride.messenger.server.entity.ChatRoomEntity;
-import com.teamride.messenger.server.repository.ChatMessageRepo;
+import com.teamride.messenger.server.repository.ChatMessageRepository;
 import com.teamride.messenger.server.repository.ChatRoomRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -23,7 +23,7 @@ import reactor.core.publisher.Mono;
 @Service
 @RequiredArgsConstructor
 public class ChatService {
-	private final ChatMessageRepo chatMessageRepo;
+	private final ChatMessageRepository chatMessageRepo;
 	private final ChatRoomRepository chatRoomRepository;
 
 	public Flux<ChatMessageDTO> getAllMessageWithRoomId(String roomId) {
@@ -92,9 +92,9 @@ public class ChatService {
 	}
 
 	@Transactional(value = "transactionManager")
-	public Mono<ChatMessage> insertMessage(ChatMessageDTO message) {
+	public Mono<ChatMessageEntity> insertMessage(ChatMessageDTO message) {
 		message.setTimestamp();
-		ChatMessage chatMessage = new ChatMessage(message);
+		ChatMessageEntity chatMessage = new ChatMessageEntity(message);
 		return chatMessageRepo.save(chatMessage);
 	}
 

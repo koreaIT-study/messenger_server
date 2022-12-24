@@ -14,13 +14,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "C_MESSAGE")
-public class ChatMessage {
+public class ChatMessageEntity {
 	private String roomId;
 	private String writer;
 	private String message;
 	private String timestamp;
 
-	public ChatMessage(ChatMessageDTO chatMessageDTO) {
+	public ChatMessageEntity(ChatMessageDTO chatMessageDTO) {
 		this.roomId = chatMessageDTO.getRoomId();
 		this.writer = chatMessageDTO.getWriter();
 		this.message = chatMessageDTO.getMessage();
