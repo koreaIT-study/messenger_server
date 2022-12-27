@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.r2dbc.DataR2dbcTest;
 
+import com.teamride.messenger.server.dto.FriendDTO;
 import com.teamride.messenger.server.dto.UserDTO;
 import com.teamride.messenger.server.entity.UserEntity;
 import com.teamride.messenger.server.repository.UserRepository;
@@ -86,10 +87,11 @@ public class R2dbcTest {
 		int friendId = 1;
 
 //		FriendEntity friendEntity = FriendEntity.builder().userId(userId).friendId(friendId).build();
+		FriendDTO friendEntity = FriendDTO.builder().userId(userId).friendId(friendId).build();
 
 		Mono<FriendEntity> mono = null;
 		try {
-			mono = friendRepository.saveFriendEntity(userId, friendId);
+			mono = friendRepository.saveFriendEntity(friendEntity);
 			mono.block();
 		} catch (Exception e) {
 

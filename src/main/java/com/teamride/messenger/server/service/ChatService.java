@@ -48,7 +48,7 @@ public class ChatService {
 		return room;
 	}
 
-	@Transactional(value = "transactionManager")
+	@Transactional
 	public Mono<ChatRoomDTO> mkRoom(ChatRoomDTO room) {
 		// uuid 만들고
 		// insert
@@ -91,9 +91,8 @@ public class ChatService {
 		return Mono.just(newRoom);
 	}
 
-	@Transactional(value = "transactionManager")
+	@Transactional
 	public Mono<ChatMessageEntity> insertMessage(ChatMessageDTO message) {
-		message.setTimestamp();
 		ChatMessageEntity chatMessage = new ChatMessageEntity(message);
 		return chatMessageRepo.save(chatMessage);
 	}

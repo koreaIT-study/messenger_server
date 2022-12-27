@@ -2,7 +2,6 @@ package com.teamride.messenger.server.service;
 
 import com.teamride.messenger.server.entity.FriendEntity;
 import com.teamride.messenger.server.repository.FriendRepository;
-import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.teamride.messenger.server.dto.FriendDTO;
@@ -56,7 +55,7 @@ public class UserService {
 		}
 	}
 
-	public Flux<FriendInfoDTO> getFriendList(int userId) throws NotFoundException {
+	public Flux<FriendInfoDTO> getFriendList(int userId)  {
 		return userRepository.findFriendsByUserid(userId);
 	}
 

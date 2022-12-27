@@ -38,12 +38,12 @@ public class KafkaController {
 
 		// message db저장
 		asyncInsertMessage(message, ack);
-
 	}
 
 	public void asyncInsertMessage(ChatMessageDTO message, Acknowledgment ack) {
 		CompletableFuture.runAsync(() -> {
 			log.info("메시지 저장 메서드");
+			message.setTimestamp();
 			Mono<ChatMessageEntity> monoChatMessage = chatService.insertMessage(message);
 			monoChatMessage.subscribe(s -> log.info("저장~~~~" + s));
 

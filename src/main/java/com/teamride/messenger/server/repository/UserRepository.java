@@ -1,7 +1,6 @@
 package com.teamride.messenger.server.repository;
 
 import com.teamride.messenger.server.dto.FriendInfoDTO;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.data.r2dbc.repository.Query;
 import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 

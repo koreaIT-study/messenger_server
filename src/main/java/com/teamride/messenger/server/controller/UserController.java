@@ -1,11 +1,7 @@
 package com.teamride.messenger.server.controller;
 
-import java.util.List;
-
 import javax.mail.MessagingException;
-
 import com.teamride.messenger.server.entity.FriendEntity;
-import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -59,7 +55,7 @@ public class UserController {
 	}
 
 	@GetMapping("/getFriends")
-	public Flux<FriendInfoDTO> getFriends(int userId) throws NotFoundException {
+	public Flux<FriendInfoDTO> getFriends(int userId) {
 		return adminService.getFriendList(userId);
 	}
 

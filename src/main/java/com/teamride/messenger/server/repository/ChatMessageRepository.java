@@ -2,8 +2,6 @@ package com.teamride.messenger.server.repository;
 
 import com.teamride.messenger.server.dto.ChatMessageDTO;
 import com.teamride.messenger.server.entity.ChatMessageEntity;
-
-import org.apache.ibatis.annotations.Param;
 import org.springframework.data.r2dbc.repository.Query;
 import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 import reactor.core.publisher.Flux;
@@ -30,5 +28,5 @@ public interface ChatMessageRepository extends ReactiveCrudRepository<ChatMessag
             "AND TIMESTAMP < :#{#param.timestamp} " +
             "ORDER BY TIMESTAMP DESC " +
             "LIMIT 100")
-    Flux<ChatMessageDTO> getBeforeMessage(@Param("param") ChatMessageDTO param);
+    Flux<ChatMessageDTO> getBeforeMessage(@org.springframework.data.repository.query.Param("param") ChatMessageDTO param);
 }
