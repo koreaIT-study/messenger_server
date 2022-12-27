@@ -26,8 +26,12 @@ public class ChatService {
 	private final ChatMessageRepository chatMessageRepo;
 	private final ChatRoomRepository chatRoomRepository;
 
-	public Flux<ChatMessageDTO> getAllMessageWithRoomId(String roomId) {
-		return chatMessageRepo.getAllMessage(roomId);
+	public Flux<ChatMessageDTO> getAllMessageWithRoomId(String roomId, String time) {
+		if("".equals(time)) {
+			return chatMessageRepo.getAllMessage(roomId);
+		}
+		ChatMessageDTO chatMessageDTO = ChatMessageDTO.builder().roomId(roomId).timestamp(time).build();
+		return chatMessageRepo.getBeforeMessage(chatMessageDTO);
 	}
 
 	public Flux<ChatRoomDTO> getAllRoomWithUserId(String userId) {

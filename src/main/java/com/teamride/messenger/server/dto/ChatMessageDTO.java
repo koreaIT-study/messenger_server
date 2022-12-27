@@ -20,6 +20,6 @@ public class ChatMessageDTO{
 	private String writerName;
 
 	public void setTimestamp(){
-		this.timestamp = new SimpleDateFormat("YYYY-MM-DD HH:mm:ss.SSS").format(System.currentTimeMillis());
+		this.timestamp = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss.SSS").format(System.currentTimeMillis());
 	}
 }

@@ -22,8 +22,9 @@ public class ChatController {
 	private final ChatService chatService;
 
 	@GetMapping("/get-chat-message")
-	public Flux<ChatMessageDTO> getChatMessage(String roomId) {
-		return chatService.getAllMessageWithRoomId(roomId);
+	public Flux<ChatMessageDTO> getChatMessage(String roomId, String time) {
+		
+		return chatService.getAllMessageWithRoomId(roomId, time);
 	}
 
 	@PostMapping("/room")

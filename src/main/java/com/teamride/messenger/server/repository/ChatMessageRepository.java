@@ -13,7 +13,7 @@ public interface ChatMessageRepository extends ReactiveCrudRepository<ChatMessag
             "JOIN USER U" +
             "   ON U.ID = M.WRITER " +
             "WHERE M.ROOM_ID = :roomId " +
-            "ORDER BY TIMESTAMP DESC " +
+            "ORDER BY TIMESTAMP  DESC " +
             "LIMIT 100")
     Flux<ChatMessageDTO> getAllMessage(String roomId);
 
