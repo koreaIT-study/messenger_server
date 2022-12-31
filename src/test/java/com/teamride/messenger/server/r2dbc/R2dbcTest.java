@@ -91,8 +91,8 @@ public class R2dbcTest {
 
 		Mono<FriendEntity> mono = null;
 		try {
-			mono = friendRepository.saveFriendEntity(friendEntity);
-			mono.block();
+//			mono = friendRepository.saveFriendEntity(friendEntity);
+//			mono.block();
 		} catch (Exception e) {
 
 		}

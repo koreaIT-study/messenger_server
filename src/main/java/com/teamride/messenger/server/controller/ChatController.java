@@ -28,7 +28,7 @@ public class ChatController {
 	}
 
 	@PostMapping("/room")
-	public Mono<ChatRoomDTO> mkRoom(@RequestBody ChatRoomDTO room) {
+	public ChatRoomDTO mkRoom(@RequestBody ChatRoomDTO room) {
 		return chatService.mkRoom(room);
 	}
 

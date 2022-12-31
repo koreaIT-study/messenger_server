@@ -125,7 +125,7 @@ public interface ChatRoomRepository extends ReactiveCrudRepository<ChatRoomEntit
 			+ "		WHERE CR.IS_GROUP = 'N'\r\n"
 			+ "		  AND CRM1.ID = :myId\r\n"
 			+ "		  AND CRM2.ID = :friendId")
-	public Mono<ChatRoomDTO> getOneByOneRoom(Map<String, String> param);
+	public Mono<ChatRoomDTO> getOneByOneRoom(String myId, String friendId);
 	
 	/**
 	 * C_ROOM_MEMBER TABLE에 저장하는 QUERY

@@ -52,18 +52,19 @@ public class ChatService {
 		return room;
 	}
 
-	@Transactional
-	public Mono<ChatRoomDTO> mkRoom(ChatRoomDTO room) {
+//	@Transactional
+	public ChatRoomDTO mkRoom(ChatRoomDTO room) {
 		// uuid 만들고
 		// insert
-		Mono<ChatRoomDTO> room2 = null;
+		ChatRoomDTO room2 = null;
 
 		if (room.getIsGroup().equals("N")) {
 			HashMap<String, String> map = new HashMap<>();
 			List<String> userId = room.getUserId();
-			map.put("friendId", userId.get(0));
-			map.put("myId", userId.get(1));
-			room2 = chatRoomRepository.getOneByOneRoom(map);
+//			map.put("friendId", userId.get(0));
+//			map.put("myId", userId.get(1));
+			room2 = chatRoomRepository.getOneByOneRoom(userId.get(1), userId.get(0)).block();
+			
 			if (room2 != null)
 				return room2;
 		}
@@ -92,7 +93,7 @@ public class ChatService {
 			}
 		}
 
-		return Mono.just(newRoom);
+		return newRoom;
 	}
 
 	@Transactional

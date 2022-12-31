@@ -64,6 +64,7 @@ public class UserService {
 	}
 
 	public Mono<FriendEntity> addFriend(FriendDTO dto) {
-		return friendRepository.saveFriendEntity(dto);
+//		return friendRepository.saveFriendEntity(dto);
+		return friendRepository.saveFriendEntity(dto.getUserId(), dto.getFriendId());
 	}
 }
