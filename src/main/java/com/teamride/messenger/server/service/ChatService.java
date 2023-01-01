@@ -79,11 +79,11 @@ public class ChatService {
 						.isGroup(newRoom.getIsGroup())
 						.build();
 
-				chatRoomRepository.save(chatRoomEntity).subscribe();
+				chatRoomRepository.save(chatRoomEntity).block();
 
 				List<String> memberList = room.getUserId();
 				for (int i = 0; i < memberList.size(); i++) {
-					chatRoomRepository.insertRoomMember(newRoom.getRoomId(), memberList.get(i)).subscribe();
+					chatRoomRepository.insertRoomMember(newRoom.getRoomId(), memberList.get(i)).block();
 
 				}
 				break;
