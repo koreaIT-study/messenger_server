@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.teamride.messenger.server.config.KafkaConstants;
 import com.teamride.messenger.server.dto.FriendDTO;
 import com.teamride.messenger.server.dto.FriendInfoDTO;
 import com.teamride.messenger.server.dto.SaveUserDTO;
@@ -31,9 +32,6 @@ import reactor.core.publisher.Mono;
 public class UserService {
 	private final UserRepository userRepository;
 	private final FriendRepository friendRepository;
-
-	private final static String LOCATION = "C:\\gb_0900_msh\\tobySpring\\resource\\sts-4.13.1.RELEASE\\workspace\\messenger_client\\src\\main\\resources\\static\\data_files";
-//			private final static String LOCATION = ""
 
 	public Mono<UserDTO> checkAndInsertUser(UserDTO userDTO) {
 		UserEntity userEntity = new UserEntity(userDTO);
@@ -64,7 +62,7 @@ public class UserService {
 
 			// file 저장
 			if (multipartFile != null) {
-				String realPath = LOCATION + "/profile";
+				String realPath = KafkaConstants. LOCATION + "/profile";
 
 				final String originalFilename = multipartFile.getOriginalFilename();
 				final int lastIndex = originalFilename.lastIndexOf(".");
