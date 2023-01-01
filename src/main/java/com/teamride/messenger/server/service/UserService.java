@@ -62,7 +62,8 @@ public class UserService {
 
 			// file 저장
 			if (multipartFile != null) {
-				String realPath = KafkaConstants. LOCATION + "/profile";
+				String realPath = "/";
+//				String realPath = KafkaConstants. LOCATION + "/profile";
 
 				final String originalFilename = multipartFile.getOriginalFilename();
 				final int lastIndex = originalFilename.lastIndexOf(".");
