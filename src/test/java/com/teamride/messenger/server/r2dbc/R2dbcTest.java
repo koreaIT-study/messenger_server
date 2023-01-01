@@ -96,6 +96,6 @@ public class R2dbcTest {
 		} catch (Exception e) {
 
 		}
-		System.out.println(mono.toString());
+//		System.out.println(mono.toString());
 	}
 }

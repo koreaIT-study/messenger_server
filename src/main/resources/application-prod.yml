@@ -18,6 +18,9 @@ spring:
     username: teamride
     password: 1234
   
+messenger:
+  file:
+    location: /home/mshmsh0814/deploy/data_files/profiles
    
 #mybatis:
 #  mapper-locations:
