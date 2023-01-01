@@ -1,13 +1,23 @@
 package com.teamride.messenger.server.service;
 
-import com.teamride.messenger.server.entity.FriendEntity;
-import com.teamride.messenger.server.repository.FriendRepository;
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
+import java.util.UUID;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.teamride.messenger.server.dto.FriendDTO;
 import com.teamride.messenger.server.dto.FriendInfoDTO;
+import com.teamride.messenger.server.dto.SaveUserDTO;
 import com.teamride.messenger.server.dto.UserDTO;
+import com.teamride.messenger.server.entity.FriendEntity;
 import com.teamride.messenger.server.entity.UserEntity;
+import com.teamride.messenger.server.repository.FriendRepository;
 import com.teamride.messenger.server.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -22,6 +32,9 @@ public class UserService {
 	private final UserRepository userRepository;
 	private final FriendRepository friendRepository;
 
+	private final static String LOCATION = "C:\\gb_0900_msh\\tobySpring\\resource\\sts-4.13.1.RELEASE\\workspace\\messenger_client\\src\\main\\resources\\static\\data_files";
+//			private final static String LOCATION = ""
+
 	public Mono<UserDTO> checkAndInsertUser(UserDTO userDTO) {
 		UserEntity userEntity = new UserEntity(userDTO);
 		Mono<Long> countMono = userRepository.countByEmail(userEntity.getEmail()).doOnSuccess(cnt -> {
@@ -30,7 +43,7 @@ public class UserService {
 			}
 		});
 		countMono.block();
-		return userRepository.findByEmail(userEntity.getEmail()).map(entity-> entity.toUserDTO(entity));
+		return userRepository.findByEmail(userEntity.getEmail()).map(entity -> entity.toUserDTO(entity));
 	}
 
 	public Mono<UserDTO> getUserInfo(UserDTO userDTO) {
@@ -44,9 +57,39 @@ public class UserService {
 
 	}
 
-	public int saveUser(UserDTO dto) throws Exception {
+	public int saveUser(MultipartFile multipartFile, UserDTO saveUserDTO) throws Exception {
 		try {
-			UserEntity entity = new UserEntity(dto);
+			String profilePath = "";
+			String profileImage = ""; // profile name
+
+			// file 저장
+			if (multipartFile != null) {
+				String realPath = LOCATION + "/profile";
+
+				final String originalFilename = multipartFile.getOriginalFilename();
+				final int lastIndex = originalFilename.lastIndexOf(".");
+				final String extension = originalFilename.substring(lastIndex);
+				final byte[] bytes = multipartFile.getBytes();
+
+				final UUID uuid = UUID.randomUUID();
+				final Path path = Paths.get(realPath);
+				final Path file = Paths.get(realPath + "/" + uuid + extension);
+
+				String realFilename = uuid + "-" + originalFilename;
+
+				File dest = new File(realPath + "/" + realFilename);
+				if (!dest.exists())
+					multipartFile.transferTo(dest);
+
+				profilePath = realPath + "/" + realFilename;
+				profileImage = originalFilename;
+				saveUserDTO.setProfileImg(realFilename);
+				saveUserDTO.setProfilePath(profilePath);
+
+			}
+
+			// save user
+			UserEntity entity = new UserEntity(saveUserDTO);
 			userRepository.save(entity).subscribe();
 			return 1;
 		} catch (Exception e) {
@@ -55,7 +98,7 @@ public class UserService {
 		}
 	}
 
-	public Flux<FriendInfoDTO> getFriendList(int userId)  {
+	public Flux<FriendInfoDTO> getFriendList(int userId) {
 		return userRepository.findFriendsByUserid(userId);
 	}
 

@@ -8,12 +8,16 @@ spring:
   thymeleaf:
     prefix: classpath:/templates
   servlet:
-    multiPart:
-      max-file-size: 10MB
+    multipart:
+      file-size-threshold: 1MB # 파일이 메모리에 기록되는 임계값 (default: 0B)
+  #    location: C:/Temp # 임시 저장 공간
+      max-file-size: 100MB
+      max-request-size: 100MB
   r2dbc:
     url: r2dbc:mariadb://35.216.1.250:3306/messenger?characterEncoding=utf8&serverTimezone=UTC
     username: teamride
     password: 1234
+  
    
 #mybatis:
 #  mapper-locations:

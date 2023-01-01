@@ -14,5 +14,6 @@ public class FriendInfoDTO {
 	private String email;
 	private String name;
 	private String profileImg;
+	private String profilePath;
 	private String roomId;
 }

@@ -17,12 +17,13 @@ public interface UserRepository extends ReactiveCrudRepository<UserEntity, Integ
 	
 	public Mono<UserEntity> findByEmailAndPwd(String email, String pwd);
 	
-	@Query("SELECT F.FRIEND_ID\n" +
-			"		, U.NAME\n" +
-			"		, U.EMAIL\n" +
-			"		, IFNULL(U.PROFILE_PATH, '') PROFILE_IMG\n" +
-			"		, IFNULL(ROOM.ROOM_ID, '') ROOM_ID\n" +
-			"	FROM FRIEND F\n" +
+	@Query("SELECT F.FRIEND_ID\r\n"
+			+ "		, U.NAME\r\n"
+			+ "		, U.EMAIL\r\n"
+			+ "		, IFNULL(U.PROFILE_PATH, '') PROFILE_PATH\r\n"
+			+ "		, IFNULL(U.PROFILE_IMG, '') PROFILE_IMG\r\n"
+			+ "		, IFNULL(ROOM.ROOM_ID, '') ROOM_ID"
+			+ "	FROM FRIEND F\n" +
 			"	JOIN USER U\n" +
 			"	ON F.FRIEND_ID = U.ID\n" +
 			"	LEFT JOIN (\n" +

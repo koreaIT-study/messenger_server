@@ -6,10 +6,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.teamride.messenger.server.dto.FriendDTO;
 import com.teamride.messenger.server.dto.FriendInfoDTO;
+import com.teamride.messenger.server.dto.SaveUserDTO;
 import com.teamride.messenger.server.dto.UserDTO;
 import com.teamride.messenger.server.service.UserService;
 
@@ -46,9 +49,9 @@ public class UserController {
 	}
 
 	@PostMapping("/signUp")
-	public Integer signUp(@RequestBody UserDTO dto) {
+	public Integer signUp(@RequestPart(required = false, value = "file") MultipartFile multipartFile, UserDTO saveUserDTO) {
 		try {
-			return adminService.saveUser(dto);
+			return adminService.saveUser(multipartFile, saveUserDTO);
 		} catch (Exception e) {
 			return 0;
 		}
