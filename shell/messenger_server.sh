@@ -17,7 +17,7 @@ start_server() {
 
   docker start zookeeper
   docker start kafka
-  docker run -it --name messenger-server -d -p 12000:12000 -v /home/mshmsh0814/storage/logs:/tmp/logs --network server-net shmin7777/messenger-server
+  docker run -it --name messenger-server -d -p 12000:12000 -v /home/mshmsh0814/storage/logs:/tmp/logs -v /home/mshmsh0814/deploy/data_files/profiles:/profile --network server-net shmin7777/messenger-server
 }
 
 # input argument check & execute
