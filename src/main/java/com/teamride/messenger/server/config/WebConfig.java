@@ -22,7 +22,7 @@ public class WebConfig implements WebMvcConfigurer {
         // .setCacheControl(CacheControl.maxAge(10, TimeUnit.MINUTES));
 
         registry.addResourceHandler("/upload/**")
-        .addResourceLocations("file:///"+"/profile/");
+        .addResourceLocations("file:/profile/");
     }
 
     @Override
