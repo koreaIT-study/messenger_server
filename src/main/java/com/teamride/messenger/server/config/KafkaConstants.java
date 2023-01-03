@@ -8,6 +8,6 @@ public class KafkaConstants {
 	public static final String KAFKA_BROKER = "35.216.1.250:9092";
 
 	// file download 경로
-	public final static String LOCATION = "/";
+	public final static String PROFILE_LOCATION = "/profile";
 //	public final static String LOCATION = "/root/data_files/profiles";
 }
