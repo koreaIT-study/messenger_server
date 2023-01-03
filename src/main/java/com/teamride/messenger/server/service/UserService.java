@@ -66,7 +66,7 @@ public class UserService {
 
 				final String originalFilename = multipartFile.getOriginalFilename();
 				final UUID uuid = UUID.randomUUID();
-				String realFilename = uuid + "-" + originalFilename.substring(originalFilename.lastIndexOf(".") + 1);
+				String realFilename = uuid + "." + originalFilename.substring(originalFilename.lastIndexOf(".") + 1);
 
 				File dest = new File(realPath + "/" + realFilename);
 				File dir = new File(realPath);
