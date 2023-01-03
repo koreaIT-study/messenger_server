@@ -17,4 +17,5 @@ public class ChatRoomEntity {
 	private String roomId;
 	private String roomName;
 	private String isGroup;
+	private String roomImagePath;
 }

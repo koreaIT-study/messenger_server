@@ -1,16 +1,22 @@
 package com.teamride.messenger.server.service;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.teamride.messenger.server.config.KafkaConstants;
 import com.teamride.messenger.server.dto.ChatMessageDTO;
 import com.teamride.messenger.server.dto.ChatRoomDTO;
+import com.teamride.messenger.server.dto.UserDTO;
 import com.teamride.messenger.server.entity.ChatMessageEntity;
 import com.teamride.messenger.server.entity.ChatRoomEntity;
+import com.teamride.messenger.server.entity.UserEntity;
 import com.teamride.messenger.server.repository.ChatMessageRepository;
 import com.teamride.messenger.server.repository.ChatRoomRepository;
 
@@ -27,7 +33,7 @@ public class ChatService {
 	private final ChatRoomRepository chatRoomRepository;
 
 	public Flux<ChatMessageDTO> getAllMessageWithRoomId(String roomId, String time) {
-		if("".equals(time)) {
+		if ("".equals(time)) {
 			return chatMessageRepo.getAllMessage(roomId);
 		}
 		ChatMessageDTO chatMessageDTO = ChatMessageDTO.builder().roomId(roomId).timestamp(time).build();
@@ -44,11 +50,10 @@ public class ChatService {
 
 	public Mono<ChatRoomDTO> findRoomById(String roomId) {
 		List<String> members = new ArrayList<>();
-		Mono<ChatRoomDTO> room = chatRoomRepository.getRoomWithUsers(roomId).doOnSuccess(r->r.setUserId(members));
+		Mono<ChatRoomDTO> room = chatRoomRepository.getRoomWithUsers(roomId).doOnSuccess(r -> r.setUserId(members));
 		chatRoomRepository.getRoomMember(roomId).subscribe(members::add);
 		room.subscribe();
-		
-	
+
 		return room;
 	}
 
@@ -64,7 +69,7 @@ public class ChatService {
 //			map.put("friendId", userId.get(0));
 //			map.put("myId", userId.get(1));
 			room2 = chatRoomRepository.getOneByOneRoom(userId.get(1), userId.get(0)).block();
-			
+
 			if (room2 != null)
 				return room2;
 		}
@@ -73,11 +78,8 @@ public class ChatService {
 		while (true) {
 			try {
 				newRoom = ChatRoomDTO.create(room);
-				ChatRoomEntity chatRoomEntity = ChatRoomEntity.builder()
-						.roomId(newRoom.getRoomId())
-						.roomName(newRoom.getRoomName())
-						.isGroup(newRoom.getIsGroup())
-						.build();
+				ChatRoomEntity chatRoomEntity = ChatRoomEntity.builder().roomId(newRoom.getRoomId())
+						.roomName(newRoom.getRoomName()).isGroup(newRoom.getIsGroup()).build();
 
 				chatRoomRepository.save(chatRoomEntity).block();
 
@@ -100,6 +102,34 @@ public class ChatService {
 	public Mono<ChatMessageEntity> insertMessage(ChatMessageDTO message) {
 		ChatMessageEntity chatMessage = new ChatMessageEntity(message);
 		return chatMessageRepo.save(chatMessage);
+	}
+
+	public int changeRoomImg(MultipartFile multipartFile, String roomId) {
+		try {
+			// file 저장
+			if (multipartFile != null) {
+				String realPath = KafkaConstants.PROFILE_LOCATION;
+
+				final String originalFilename = multipartFile.getOriginalFilename();
+				final UUID uuid = UUID.randomUUID();
+				String realFilename = uuid + "." + originalFilename.substring(originalFilename.lastIndexOf(".") + 1);
+
+				File dest = new File(realPath + "/" + realFilename);
+				File dir = new File(realPath);
+				if (!dir.exists()) {
+					dir.mkdir();
+				}
+
+				if (!dest.exists())
+					multipartFile.transferTo(dest);
+				chatRoomRepository.updateRoomImagePathByRoomId(realFilename, roomId).block();
+			}
+			// save user
+			return 1;
+		} catch (Exception e) {
+			log.error("sigh up error", e);
+			return 0;
+		}
 	}
 
 }

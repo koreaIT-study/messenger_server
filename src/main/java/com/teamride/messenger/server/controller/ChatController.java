@@ -3,7 +3,9 @@ package com.teamride.messenger.server.controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.teamride.messenger.server.dto.ChatMessageDTO;
 import com.teamride.messenger.server.dto.ChatRoomDTO;
@@ -23,7 +25,7 @@ public class ChatController {
 
 	@GetMapping("/get-chat-message")
 	public Flux<ChatMessageDTO> getChatMessage(String roomId, String time) {
-		
+
 		return chatService.getAllMessageWithRoomId(roomId, time);
 	}
 
@@ -45,5 +47,11 @@ public class ChatController {
 	@GetMapping("/get-room-list")
 	public Flux<ChatRoomDTO> getRoomList(String userId) {
 		return chatService.getAllRoomWithUserId(userId);
+	}
+
+	@PostMapping("/change-room-img")
+	public int changeRoomImg(@RequestPart(required = false, value = "file") MultipartFile multipartFile,
+			String roomId) {
+		return chatService.changeRoomImg(multipartFile, roomId);
 	}
 }

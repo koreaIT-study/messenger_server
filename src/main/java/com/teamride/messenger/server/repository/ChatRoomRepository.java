@@ -38,11 +38,13 @@ public interface ChatRoomRepository extends ReactiveCrudRepository<ChatRoomEntit
 			+ "			, MSG.timestamp\r\n"
 			+ "			, RNM.ROOM_NAME\r\n"
 			+ "			, CNT.CNT\r\n"
+			+ "			, RNM.ROOM_IMAGE_PATH\r\n"
 			+ "		FROM MSG\r\n"
 			+ "		JOIN (\r\n"
 			+ "		      SELECT\r\n"
 			+ "		        CRM.ROOM_ID\r\n"
 			+ "				, MAX(R.ROOM_NAME) ROOM_NAME\r\n"
+			+ "				, MAX(ROOM_IMAGE_PATH) ROOM_IMAGE_PATH\r\n"
 			+ "		      FROM C_ROOM R\r\n"
 			+ "		      JOIN C_ROOM_MEMBER CRM\r\n"
 			+ "		          ON R.ROOM_ID = CRM.ROOM_ID\r\n"
@@ -137,4 +139,7 @@ public interface ChatRoomRepository extends ReactiveCrudRepository<ChatRoomEntit
 			+ "		VALUES\r\n"
 			+ "			(:roomId, :id)")
 	public Mono<Integer> insertRoomMember(String roomId, String id);
+	
+	@Query("UPDATE C_ROOM SET ROOM_IMAGE_PATH = :path WHERE ROOM_ID = :roomId")
+	public Mono<Void> updateRoomImagePathByRoomId(String path, String roomId);
 }
