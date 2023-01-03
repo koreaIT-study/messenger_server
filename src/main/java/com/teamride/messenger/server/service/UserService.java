@@ -86,7 +86,7 @@ public class UserService {
 
 			// save user
 			UserEntity entity = new UserEntity(saveUserDTO);
-			userRepository.save(entity).subscribe();
+			userRepository.save(entity).block();
 			return 1;
 		} catch (Exception e) {
 			log.error("sigh up error", e);
