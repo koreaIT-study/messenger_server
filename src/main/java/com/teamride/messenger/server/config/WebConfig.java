@@ -23,6 +23,9 @@ public class WebConfig implements WebMvcConfigurer {
 
         registry.addResourceHandler("/upload/**")
         .addResourceLocations("file:/profile/");
+
+        registry.addResourceHandler("/msgFile/**")
+                .addResourceLocations("file://msg/");
     }
 
     @Override

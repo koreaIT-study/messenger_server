@@ -19,11 +19,13 @@ public class ChatMessageEntity {
 	private String writer;
 	private String message;
 	private String timestamp;
+	private String extension;
 
 	public ChatMessageEntity(ChatMessageDTO chatMessageDTO) {
 		this.roomId = chatMessageDTO.getRoomId();
 		this.writer = chatMessageDTO.getWriter();
 		this.message = chatMessageDTO.getMessage();
 		this.timestamp = chatMessageDTO.getTimestamp();
+		this.extension = chatMessageDTO.getExtension();
 	}
 }

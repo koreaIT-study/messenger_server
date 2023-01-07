@@ -1,13 +1,21 @@
 package com.teamride.messenger.server.service;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
+import com.fasterxml.jackson.databind.util.BeanUtil;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.teamride.messenger.server.config.KafkaConstants;
@@ -31,6 +39,9 @@ import reactor.core.publisher.Mono;
 public class ChatService {
 	private final ChatMessageRepository chatMessageRepo;
 	private final ChatRoomRepository chatRoomRepository;
+
+	@Autowired
+	private KafkaTemplate<String, ChatMessageDTO> kafkaTemplate;
 
 	public Flux<ChatMessageDTO> getAllMessageWithRoomId(String roomId, String time) {
 		if ("".equals(time)) {
@@ -132,4 +143,56 @@ public class ChatService {
 		}
 	}
 
+
+	@Transactional
+	public int fileSend(List<MultipartFile> files, ChatMessageDTO msg){
+		// 파일을 먼저 다 저장하고
+		StringBuilder sb = new StringBuilder();
+		String realPath = sb.append(KafkaConstants.MSG_FILE_LOCATION)
+							.append('/')
+							.append(msg.getRoomId())
+							.toString();
+
+		List<ChatMessageDTO> list = new ArrayList<>();
+
+		try {
+			for(MultipartFile file : files){
+				ChatMessageDTO dto = new ChatMessageDTO();
+				BeanUtils.copyProperties(dto, msg);
+				String uuid = UUID.randomUUID().toString();
+				String fileName = uuid + "||"+ file.getOriginalFilename();
+				dto.setExtension(fileName.substring(fileName.lastIndexOf(".")));
+
+				File dest = new File(realPath + '/' + fileName);
+				File dir = new File(realPath);
+				if(!dir.exists()) dir.mkdir();
+				if(!dest.exists()) file.transferTo(dest);
+
+				dto.setMessage(fileName);
+				list.add(dto);
+			}
+		} catch (IOException e) {
+			return 0;
+		}
+
+		// 그다음 비동기로 메시지 전송
+		CompletableFuture.runAsync(() ->{
+			for(ChatMessageDTO dto : list){
+				dto.setTimestamp();
+				Mono<ChatMessageEntity> monoChatMessage = insertMessage(dto);
+				monoChatMessage.subscribe(s -> log.info("msg file save :::"));
+
+				String partitionKey = dto.getRoomId().substring(0, 2);
+				ListenableFuture<SendResult<String, ChatMessageDTO>> future = kafkaTemplate.send(KafkaConstants.CHAT_CLIENT,
+						partitionKey, dto);
+
+				future.addCallback((result) -> {
+					log.info("message 전송 성공, message :: {}, result is :: {}", dto, result);
+				}, (ex) -> {
+					log.error("message 전송 실패, message :: {}, error is :: {}", dto, ex);
+				});
+			}
+		});
+		return list.size();
+	}
 }

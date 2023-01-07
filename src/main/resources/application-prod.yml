@@ -14,7 +14,7 @@ spring:
       max-file-size: 100MB
       max-request-size: 100MB
   r2dbc:
-    url: r2dbc:mariadb://35.216.1.250:3306/messenger?characterEncoding=utf8&serverTimezone=UTC
+    url: r2dbc:mariadb://35.216.1.250:13535/messenger?characterEncoding=utf8&serverTimezone=UTC
     username: teamride
     password: 1234
   

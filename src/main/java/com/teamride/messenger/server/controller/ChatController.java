@@ -16,6 +16,10 @@ import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import javax.annotation.PostConstruct;
+import java.util.HashMap;
+import java.util.List;
+
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -53,5 +57,10 @@ public class ChatController {
 	public int changeRoomImg(@RequestPart(required = false, value = "file") MultipartFile multipartFile,
 			String roomId) {
 		return chatService.changeRoomImg(multipartFile, roomId);
+	}
+
+	@PostMapping("/messege-file")
+	public int fileSend(@RequestPart(required = false, value = "files")List<MultipartFile> files, ChatMessageDTO msg){
+		return chatService.fileSend(files, msg);
 	}
 }

@@ -9,5 +9,6 @@ public class KafkaConstants {
 
 	// file download 경로
 	public final static String PROFILE_LOCATION = "/profile";
+	public final static String MSG_FILE_LOCATION = "/msg";
 //	public final static String LOCATION = "/root/data_files/profiles";
 }
