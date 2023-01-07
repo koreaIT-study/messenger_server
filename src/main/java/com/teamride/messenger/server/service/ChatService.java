@@ -145,7 +145,7 @@ public class ChatService {
 
 
 	@Transactional
-	public int fileSend(List<MultipartFile> files, ChatMessageDTO msg){
+	public Integer fileSend(List<MultipartFile> files, ChatMessageDTO msg){
 		// 파일을 먼저 다 저장하고
 		StringBuilder sb = new StringBuilder();
 		String realPath = sb.append(KafkaConstants.MSG_FILE_LOCATION)
