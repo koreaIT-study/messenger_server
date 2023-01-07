@@ -145,7 +145,7 @@ public class ChatService {
 
 
 	@Transactional
-	public Integer fileSend(List<MultipartFile> files, ChatMessageDTO msg){
+	public Mono<Integer> fileSend(List<MultipartFile> files, ChatMessageDTO msg){
 		// 파일을 먼저 다 저장하고
 		StringBuilder sb = new StringBuilder();
 		String realPath = sb.append(KafkaConstants.MSG_FILE_LOCATION)
@@ -172,7 +172,7 @@ public class ChatService {
 				list.add(dto);
 			}
 		} catch (IOException e) {
-			return 0;
+			return Mono.empty();
 		}
 
 		// 그다음 비동기로 메시지 전송
@@ -193,6 +193,6 @@ public class ChatService {
 				});
 			}
 		});
-		return list.size();
+		return Mono.just(list.size());
 	}
 }
