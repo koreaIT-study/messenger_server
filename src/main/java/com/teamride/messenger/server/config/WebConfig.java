@@ -25,7 +25,7 @@ public class WebConfig implements WebMvcConfigurer {
         .addResourceLocations("file:/profile/");
 
         registry.addResourceHandler("/msgFile/**")
-                .addResourceLocations("file://msg/");
+                .addResourceLocations("file:/msg/");
     }
 
     @Override
