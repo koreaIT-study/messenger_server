@@ -157,8 +157,15 @@ public class ChatService {
 
 		try {
 			for(MultipartFile file : files){
-				ChatMessageDTO dto = new ChatMessageDTO();
-				BeanUtils.copyProperties(dto, msg);
+                ChatMessageDTO test = new ChatMessageDTO();
+                BeanUtils.copyProperties(test, msg);
+                log.info("test ::: {}",test);
+
+				ChatMessageDTO dto = ChatMessageDTO.builder()
+									.roomId(msg.getRoomId())
+									.writer(msg.getWriter())
+									.build();
+
 				String uuid = UUID.randomUUID().toString();
 				String fileName = uuid + "||"+ file.getOriginalFilename();
 				dto.setExtension(fileName.substring(fileName.lastIndexOf(".")));
