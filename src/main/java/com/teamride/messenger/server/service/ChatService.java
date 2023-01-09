@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
+import com.fasterxml.jackson.databind.util.BeanUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -20,8 +21,10 @@ import org.springframework.web.multipart.MultipartFile;
 import com.teamride.messenger.server.config.KafkaConstants;
 import com.teamride.messenger.server.dto.ChatMessageDTO;
 import com.teamride.messenger.server.dto.ChatRoomDTO;
+import com.teamride.messenger.server.dto.UserDTO;
 import com.teamride.messenger.server.entity.ChatMessageEntity;
 import com.teamride.messenger.server.entity.ChatRoomEntity;
+import com.teamride.messenger.server.entity.UserEntity;
 import com.teamride.messenger.server.repository.ChatMessageRepository;
 import com.teamride.messenger.server.repository.ChatRoomRepository;
 
@@ -142,7 +145,7 @@ public class ChatService {
 
 
 	@Transactional
-	public int fileSend(List<MultipartFile> files, ChatMessageDTO msg){
+	public Mono<Integer> fileSend(List<MultipartFile> files, ChatMessageDTO msg){
 		// 파일을 먼저 다 저장하고
 		StringBuilder sb = new StringBuilder();
 		String realPath = sb.append(KafkaConstants.MSG_FILE_LOCATION)
@@ -172,7 +175,7 @@ public class ChatService {
 				list.add(dto);
 			}
 		} catch (IOException e) {
-			return 0;
+			return Mono.empty();
 		}
 
 		// 그다음 비동기로 메시지 전송
@@ -193,6 +196,6 @@ public class ChatService {
 				});
 			}
 //		});
-		return list.size();
+		return Mono.just(list.size());
 	}
 }

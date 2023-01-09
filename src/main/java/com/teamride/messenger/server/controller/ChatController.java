@@ -60,7 +60,7 @@ public class ChatController {
 	}
 
 	@PostMapping("/messege-file")
-	public int fileSend(@RequestPart(required = false, value = "files")List<MultipartFile> files, ChatMessageDTO msg){
+	public Mono<Integer> fileSend(@RequestPart(required = false, value = "files")List<MultipartFile> files, ChatMessageDTO msg){
 		return chatService.fileSend(files, msg);
 	}
 }
