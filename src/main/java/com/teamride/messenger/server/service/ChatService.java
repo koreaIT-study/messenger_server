@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
-import com.fasterxml.jackson.databind.util.BeanUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -21,10 +20,8 @@ import org.springframework.web.multipart.MultipartFile;
 import com.teamride.messenger.server.config.KafkaConstants;
 import com.teamride.messenger.server.dto.ChatMessageDTO;
 import com.teamride.messenger.server.dto.ChatRoomDTO;
-import com.teamride.messenger.server.dto.UserDTO;
 import com.teamride.messenger.server.entity.ChatMessageEntity;
 import com.teamride.messenger.server.entity.ChatRoomEntity;
-import com.teamride.messenger.server.entity.UserEntity;
 import com.teamride.messenger.server.repository.ChatMessageRepository;
 import com.teamride.messenger.server.repository.ChatRoomRepository;
 
@@ -163,8 +160,11 @@ public class ChatService {
 				String fileName = uuid + "||"+ file.getOriginalFilename();
 				dto.setExtension(fileName.substring(fileName.lastIndexOf(".")));
 
-				File dest = new File(realPath + '/' + fileName);
+				File msgFileRoot = new File(KafkaConstants.MSG_FILE_LOCATION);
 				File dir = new File(realPath);
+				File dest = new File(realPath + '/' + fileName);
+
+				if(!msgFileRoot.exists()) msgFileRoot.mkdir();
 				if(!dir.exists()) dir.mkdir();
 				if(!dest.exists()) file.transferTo(dest);
 
@@ -176,7 +176,7 @@ public class ChatService {
 		}
 
 		// 그다음 비동기로 메시지 전송
-		CompletableFuture.runAsync(() ->{
+//		CompletableFuture.runAsync(() ->{
 			for(ChatMessageDTO dto : list){
 				dto.setTimestamp();
 				Mono<ChatMessageEntity> monoChatMessage = insertMessage(dto);
@@ -192,7 +192,7 @@ public class ChatService {
 					log.error("message 전송 실패, message :: {}, error is :: {}", dto, ex);
 				});
 			}
-		});
+//		});
 		return list.size();
 	}
 }
