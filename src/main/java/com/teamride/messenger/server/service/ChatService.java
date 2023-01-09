@@ -146,6 +146,7 @@ public class ChatService {
 
 	@Transactional
 	public Mono<Integer> fileSend(List<MultipartFile> files, ChatMessageDTO msg){
+		log.info("in fileSend msg ::: {}", msg);
 		// 파일을 먼저 다 저장하고
 		StringBuilder sb = new StringBuilder();
 		String realPath = sb.append(KafkaConstants.MSG_FILE_LOCATION)
@@ -157,14 +158,8 @@ public class ChatService {
 
 		try {
 			for(MultipartFile file : files){
-                ChatMessageDTO test = new ChatMessageDTO();
-                BeanUtils.copyProperties(test, msg);
-                log.info("test ::: {}",test);
-
-				ChatMessageDTO dto = ChatMessageDTO.builder()
-									.roomId(msg.getRoomId())
-									.writer(msg.getWriter())
-									.build();
+				ChatMessageDTO dto = new ChatMessageDTO();
+				BeanUtils.copyProperties(msg, dto);
 
 				String uuid = UUID.randomUUID().toString();
 				String fileName = uuid + "||"+ file.getOriginalFilename();
