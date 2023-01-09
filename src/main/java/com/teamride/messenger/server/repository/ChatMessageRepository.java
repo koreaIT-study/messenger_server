@@ -8,7 +8,7 @@ import reactor.core.publisher.Flux;
 
 public interface ChatMessageRepository extends ReactiveCrudRepository<ChatMessageEntity, Void> {
 
-    @Query("SELECT ROOM_ID, WRITER, MESSAGE,TIMESTAMP, NAME AS WRITER_NAME " +
+    @Query("SELECT ROOM_ID, WRITER, MESSAGE,TIMESTAMP, NAME AS WRITER_NAME, M.EXTENSION " +
             "FROM C_MESSAGE M " +
             "JOIN USER U" +
             "   ON U.ID = M.WRITER " +
@@ -20,7 +20,7 @@ public interface ChatMessageRepository extends ReactiveCrudRepository<ChatMessag
     /**
      * 스크롤 끝까지 올렸을 때 이전 메시지 가져오기
      * */
-    @Query("SELECT ROOM_ID, WRITER, MESSAGE,TIMESTAMP, NAME AS WRITER_NAME " +
+    @Query("SELECT ROOM_ID, WRITER, MESSAGE,TIMESTAMP, NAME AS WRITER_NAME, M.EXTENSION  " +
             "FROM C_MESSAGE M " +
             "JOIN USER U" +
             "   ON U.ID = M.WRITER " +
