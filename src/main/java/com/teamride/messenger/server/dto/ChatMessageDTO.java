@@ -19,6 +19,7 @@ public class ChatMessageDTO{
 	private String timestamp;
 	private String writerName;
 	private String extension;
+	private String profileImg;
 
 	public void setTimestamp(){
 		this.timestamp = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss.SSS").format(System.currentTimeMillis());
