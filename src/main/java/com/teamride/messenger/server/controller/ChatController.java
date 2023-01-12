@@ -67,8 +67,7 @@ public class ChatController {
 	}
 
 	@GetMapping("/downFile/{roomId}/{msg}")
-	public MultiValueMap<String, Object> fileDownload(@PathVariable String roomId, @PathVariable String msg){
-		MultiValueMap<String, Object> map = new LinkedMultiValueMap<>();
+	public MultipartFile fileDownload(@PathVariable String roomId, @PathVariable String msg){
 		File file = new File(KafkaConstants.MSG_FILE_LOCATION + '/' + roomId + '/' + msg);
 		try {
 			DiskFileItem fileItem = new DiskFileItem(msg.substring(msg.lastIndexOf("||"))
@@ -82,11 +81,10 @@ public class ChatController {
 			IOUtils.copy(input,os);
 
 			MultipartFile multipartFile = new CommonsMultipartFile(fileItem);
-			map.add("file", multipartFile);
-			return map;
+
+			return multipartFile;
 		} catch (IOException e) {
-			map.add("status", false);
-			return map;
+			return null;
 		}
 	}
 }
