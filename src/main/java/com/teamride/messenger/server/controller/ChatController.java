@@ -65,7 +65,7 @@ public class ChatController {
 	}
 
 	@PostMapping("/change-room-img")
-	public int changeRoomImg(@RequestPart(required = false, value = "file") MultipartFile multipartFile,
+	public String changeRoomImg(@RequestPart(required = false, value = "file") MultipartFile multipartFile,
 			String roomId) {
 		return chatService.changeRoomImg(multipartFile, roomId);
 	}

@@ -115,7 +115,8 @@ public class ChatService {
 		return chatMessageRepo.save(chatMessage);
 	}
 
-	public int changeRoomImg(MultipartFile multipartFile, String roomId) {
+	public String changeRoomImg(MultipartFile multipartFile, String roomId) {
+		String fileName = "";
 		try {
 			// file 저장
 			if (multipartFile != null) {
@@ -124,8 +125,9 @@ public class ChatService {
 				final String originalFilename = multipartFile.getOriginalFilename();
 				final UUID uuid = UUID.randomUUID();
 				String realFilename = uuid + "." + originalFilename.substring(originalFilename.lastIndexOf(".") + 1);
-
-				File dest = new File(realPath + "/" + realFilename);
+					
+				fileName = realPath + "/" + realFilename;
+				File dest = new File(fileName);
 				File dir = new File(realPath);
 				if (!dir.exists()) {
 					dir.mkdir();
@@ -136,11 +138,11 @@ public class ChatService {
 				chatRoomRepository.updateRoomImagePathByRoomId(realFilename, roomId).block();
 			}
 			// save user
-			return 1;
 		} catch (Exception e) {
 			log.error("sigh up error", e);
-			return 0;
 		}
+		
+		return fileName;
 	}
 
 
