@@ -1,17 +1,13 @@
 package com.teamride.messenger.server.controller;
 
-import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.nio.file.Files;
+import java.io.FileNotFoundException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
-import org.apache.commons.fileupload.disk.DiskFileItem;
-import org.apache.commons.io.IOUtils;
-import org.springframework.http.HttpEntity;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import com.teamride.messenger.server.config.KafkaConstants;
 import com.teamride.messenger.server.dto.ChatMessageDTO;
@@ -77,28 +72,20 @@ public class ChatController {
 	}
 
 	@GetMapping("/downFile/{roomId}/{msg}")
-	public MultiValueMap<String, MultipartFile> fileDownload(@PathVariable String roomId, @PathVariable String msg) {
-		MultiValueMap<String, MultipartFile> map = new LinkedMultiValueMap<>();
-		File file = new File(KafkaConstants.MSG_FILE_LOCATION + '/' + roomId + '/' + msg);
-		try {
-			DiskFileItem fileItem = new DiskFileItem(msg.substring(msg.lastIndexOf("||"))
-													, Files.probeContentType(file.toPath())
-													, false
-													, file.getName()
-													, (int) file.length()
-													, file.getParentFile());
-			FileInputStream input = new FileInputStream(file);
-			OutputStream os = fileItem.getOutputStream();
-			IOUtils.copy(input,os);
+	public ResponseEntity<?> fileDownload(@PathVariable String roomId, @PathVariable String msg) {
+		String fileName = msg.substring(msg.lastIndexOf('|') + 1);
 
-			MultipartFile multipartFile = new CommonsMultipartFile(fileItem);
-			map.add("file", multipartFile);
-			return map;
-		} catch (IOException e) {
-			return map;
+		InputStreamResource resource = null;
+		try {
+			Path filePath = Paths.get(KafkaConstants.MSG_FILE_LOCATION + '/' + roomId + '/' + msg);
+			resource = new InputStreamResource(new FileInputStream(filePath.toString()));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
 		}
-//		MultipartBodyBuilder builder = new MultipartBodyBuilder();
-//		builder.part("file", new FileSystemResource(file));
-//		return builder.build();
+		return ResponseEntity.ok()
+				.contentType(MediaType.APPLICATION_OCTET_STREAM)
+				.cacheControl(CacheControl.noCache())
+				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileName)
+				.body(resource);
 	}
 }
